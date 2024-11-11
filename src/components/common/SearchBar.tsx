@@ -6,32 +6,28 @@ import { useState } from 'react';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
-  placeholder?: string;
 }
 
-export default function SearchBar({ onSearch, placeholder = "Search..." }: SearchBarProps) {
-  const [searchQuery, setSearchQuery] = useState('');
+export default function SearchBar({ onSearch }: SearchBarProps) {
+  const [query, setQuery] = useState('');
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setSearchQuery(query);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     onSearch(query);
   };
 
   return (
-    <div className="relative max-w-md w-full">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-      <input
-        type="search"
-        value={searchQuery}
-        onChange={handleSearch}
-        placeholder={placeholder}
-        className="w-full pl-10 pr-4 py-2 text-sm rounded-md 
-                 bg-background border border-input
-                 hover:border-ring focus:border-ring
-                 focus:outline-none focus:ring-1 focus:ring-ring
-                 transition-colors"
-      />
-    </div>
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <input
+          type="text"
+          placeholder="Search..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="w-full rounded-md border bg-background px-9 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
+        />
+      </div>
+    </form>
   );
 }

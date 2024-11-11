@@ -9,6 +9,7 @@ import ThemeToggle from '../common/theme-toggle';
 import SearchBar from '../common/SearchBar';
 import { cn } from '@/lib/utils';
 import type { Route } from 'next';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -27,6 +28,25 @@ const navigationItems: NavigationItem[] = [
   { label: 'About', icon: User, href: '/about' as Route },
   { label: 'Contact', icon: Mail, href: '/contact' as Route }
 ];
+
+const sidebarVariants = {
+  open: {
+    x: 0,
+    transition: {
+      type: "tween",
+      duration: 0.3,
+      ease: "easeInOut"
+    }
+  },
+  closed: {
+    x: "-100%",
+    transition: {
+      type: "tween",
+      duration: 0.3,
+      ease: "easeInOut"
+    }
+  }
+};
 
 const useMediaQuery = (query: string): boolean => {
   const [matches, setMatches] = useState(false);
@@ -58,9 +78,41 @@ export default function Layout({ children }: LayoutProps) {
   }, [pathname, isMobile]);
 
   const handleSearch = (query: string) => {
-    // Implement search logic here
     console.log('Searching for:', query);
+    // Implement search logic here
   };
+
+  const SidebarContent = () => (
+    <nav className="h-full py-6 px-3 flex flex-col">
+      <div className="px-3 mb-6 hidden md:flex items-center gap-2">
+        <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
+          <span className="text-primary-foreground font-bold">D</span>
+        </div>
+        <span className="text-xl font-bold">Djangify</span>
+      </div>
+
+      <div className="space-y-1">
+        {navigationItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            onClick={() => isMobile && setIsSidebarOpen(false)}
+            className={cn(
+              "flex items-center gap-3 px-3 py-2 text-sm rounded-md",
+              "transition-colors duration-200",
+              "hover:bg-accent hover:text-accent-foreground",
+              pathname === item.href
+                ? "bg-accent text-accent-foreground"
+                : "text-muted-foreground"
+            )}
+          >
+            <item.icon className="h-4 w-4" />
+            <span>{item.label}</span>
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -88,60 +140,39 @@ export default function Layout({ children }: LayoutProps) {
       {/* Main Layout */}
       <div className="flex pt-16 min-h-screen">
         {/* Sidebar */}
-        <aside
-          className={cn(
-            "bg-background border-r",
-            isMobile
-              ? cn(
-                "fixed inset-y-0 left-0 top-16 w-64 z-40 transform transition-transform duration-200 ease-in-out",
-                isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-              )
-              : "w-64 sticky top-16 h-[calc(100vh-4rem)]"
-          )}
-        >
-          <nav className="h-full py-6 px-3 flex flex-col">
-            <div className="px-3 mb-6 hidden md:flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
-                <span className="text-primary-foreground font-bold">D</span>
-              </div>
-              <span className="text-xl font-bold">Djangify</span>
-            </div>
-
-            <div className="space-y-1">
-              {navigationItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => isMobile && setIsSidebarOpen(false)}
-                  className={cn(
-                    "flex items-center gap-3 px-3 py-2 text-sm rounded-md",
-                    "transition-colors duration-200",
-                    "hover:bg-accent hover:text-accent-foreground",
-                    pathname === item.href
-                      ? "bg-accent text-accent-foreground"
-                      : "text-muted-foreground"
-                  )}
+        {isMobile ? (
+          <AnimatePresence>
+            {isSidebarOpen && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-black/20 z-30"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+                <motion.aside
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                  variants={sidebarVariants}
+                  className="fixed inset-y-0 left-0 top-16 w-64 z-40 bg-background border-r"
                 >
-                  <item.icon className="h-4 w-4" />
-                  <span>{item.label}</span>
-                </Link>
-              ))}
-            </div>
-          </nav>
-        </aside>
+                  <SidebarContent />
+                </motion.aside>
+              </>
+            )}
+          </AnimatePresence>
+        ) : (
+          <aside className="w-64 sticky top-16 h-[calc(100vh-4rem)] bg-background border-r">
+            <SidebarContent />
+          </aside>
+        )}
 
         {/* Main Content */}
         <main className="flex-1 container py-6">
           {children}
         </main>
-
-        {/* Mobile Overlay */}
-        {isMobile && isSidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black/20 z-30"
-            onClick={() => setIsSidebarOpen(false)}
-          />
-        )}
       </div>
     </div>
   );
