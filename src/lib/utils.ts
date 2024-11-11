@@ -1,12 +1,15 @@
 // src/lib/utils.ts
-export function cn(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }
 
-export function formatDate(date: string | Date) {
+export function formatDate(date: string) {
   return new Date(date).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
-  });
+  })
 }
