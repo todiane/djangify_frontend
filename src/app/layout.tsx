@@ -1,10 +1,19 @@
-// app/layout.tsx
+// src/app/layout.tsx
 import { ErrorBoundary } from '@/components/error';
-import QueryProvider from '@/providers/query-provider';
-import { Inter } from 'next/font/google';
+import Providers from '@/providers/providers';
+import { Poppins } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-poppins',
+});
+
+export const metadata = {
+  title: 'Djangify',
+  description: 'Django project structure generator',
+};
 
 export default function RootLayout({
   children,
@@ -12,12 +21,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${poppins.variable} font-sans antialiased`}>
         <ErrorBoundary>
-          <QueryProvider>
-            {children}
-          </QueryProvider>
+          <Providers>{children}</Providers>
         </ErrorBoundary>
       </body>
     </html>
