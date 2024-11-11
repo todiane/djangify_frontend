@@ -34,19 +34,34 @@ export interface BasePost {
 // Full post type extending base post
 export interface Post extends BasePost {
   content: string;
-  tags: Tag[];
-  status: 'draft' | 'published';
-  created_at: string;
-  updated_at: string;
-  is_featured: boolean;
+  tags?: Tag[];  // Made optional
+  status?: 'draft' | 'published';  // Made optional
+  created_at?: string;  // Made optional
+  updated_at?: string;  // Made optional
+  is_featured?: boolean;  // Made optional
   comments?: Comment[];
   reading_time?: number;
   word_count?: number;
   meta_description?: string;
 }
 
-// Featured post with required reading metrics
-export interface FeaturedPost extends Post {
-  reading_time: number;  // Required for FeaturedPost
-  word_count: number;    // Required for FeaturedPost
+// Featured post type extending Post
+export interface FeaturedPost extends BasePost {
+  content: string;
+  tags?: Tag[];
+  status?: 'draft' | 'published';
+  created_at?: string;
+  updated_at?: string;
+  is_featured?: boolean;
+  comments?: Comment[];
+  reading_time: number;  // Still required for FeaturedPost
+  word_count: number;    // Still required for FeaturedPost
+  meta_description?: string;
+}
+
+export interface PaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
 }

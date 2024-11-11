@@ -3,31 +3,10 @@
 import { useState, useEffect } from 'react';
 import { BlogPostCard } from '@/components/blog/BlogPostCard';
 import { PostsLoadingSkeleton } from '@/components/blog/PostsLoadingSkeleton';
-
-interface Post {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  published_date: string;
-  author: {
-    name: string;
-    avatar_url?: string;
-  };
-  slug: string;
-  reading_time?: number;
-  word_count?: number;
-}
-
-interface PaginatedResponse<T> {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: T[];
-}
+import type { Post, FeaturedPost, PaginatedResponse } from '@/types/blog';
 
 const LatestPosts = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<FeaturedPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,14 +14,23 @@ const LatestPosts = () => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/posts?limit=4');
+        const response = await fetch(
+          'http://localhost:8000/api/v1/blog/posts/?page_size=4&ordering=-published_date'
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data: PaginatedResponse<Post> = await response.json();
-        setPosts(data.results);
+        // Transform Post to FeaturedPost by adding required fields
+        const featuredPosts: FeaturedPost[] = data.results.map(post => ({
+          ...post,
+          content: post.content || '',
+          reading_time: post.reading_time || 5, // Default reading time
+          word_count: post.word_count || post.content.split(/\s+/).length, // Calculate word count if missing
+        }));
+        setPosts(featuredPosts);
       } catch (err) {
         setError('Failed to load recent posts');
         console.error('Error fetching posts:', err);
@@ -61,11 +49,11 @@ const LatestPosts = () => {
   if (error) {
     return (
       <section className="py-16">
-        <div className="text-center p-4 bg-red-50 text-red-600 rounded-md">
+        <div className="text-center p-4 bg-red-50 text-red-500 rounded-md">
           {error}
           <button
             onClick={() => window.location.reload()}
-            className="ml-4 px-4 py-2 border border-red-200 rounded-md hover:bg-red-100 transition-colors"
+            className="ml-4 px-4 py-2 border rounded-md hover:bg-gray-50"
           >
             Try Again
           </button>
@@ -91,6 +79,6 @@ const LatestPosts = () => {
       </div>
     </section>
   );
-}
+};
 
 export default LatestPosts;
