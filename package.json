@@ -3,32 +3,38 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.59.20",
-    "axios": "^1.7.7",
-    "framer-motion": "^11.11.11",
-    "next": "15.0.3",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
-    "react-hook-form": "^7.53.2",
-    "react-syntax-highlighter": "^15.6.1"
+    "@tanstack/react-query": "^5.24.1",
+    "axios": "^1.6.7",
+    "framer-motion": "^11.0.8",
+    "next": "^14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.50.1",
+    "react-syntax-highlighter": "^15.6.1",
+    "zod": "^3.22.4",
+    "@hookform/resolvers": "^3.3.4",
+    "cookies-next": "^4.1.1",
+    "jwt-decode": "^4.0.0"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.15",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "@types/react-syntax-highlighter": "^15.5.13",
-    "eslint": "^8",
-    "eslint-config-next": "15.0.3",
-    "postcss": "^8",
+    "@tailwindcss/typography": "^0.5.10",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
+    "@types/react-syntax-highlighter": "^15.5.11",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.1.0",
+    "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "^5"
+    "typescript": "^5.3.3"
   }
 }
