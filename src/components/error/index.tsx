@@ -1,4 +1,6 @@
 // components/error/index.tsx
+'use client';
+
 import React, { ReactNode, useState, useEffect } from 'react';
 import { AlertTriangle, XCircle } from 'lucide-react';
 
