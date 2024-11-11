@@ -13,3 +13,11 @@ export function formatDate(date: string) {
     year: 'numeric',
   })
 }
+
+export const apiUtils = {
+  getMediaUrl: (path: string) => {
+    if (!path) return '';
+    if (path.startsWith('http')) return path;
+    return path.startsWith('/') ? path : `/${path}`;
+  },
+};
