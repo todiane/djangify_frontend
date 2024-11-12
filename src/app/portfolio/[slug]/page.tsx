@@ -5,6 +5,8 @@ import { ProjectView } from './ProjectView';
 import { portfolioApi } from '@/lib/api/portfolio';
 import Layout from '@/components/layout/Layout';
 import { AlertCircle } from "lucide-react";
+import { generatePortfolioJsonLd } from '@/lib/metadata';
+import { Metadata } from 'next';
 
 interface PageProps {
   params: {
@@ -12,7 +14,7 @@ interface PageProps {
   };
 }
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   try {
     const response = await portfolioApi.getProjectBySlug(params.slug);
     const project = response.data;
@@ -20,11 +22,24 @@ export async function generateMetadata({ params }: PageProps) {
     return {
       title: `${project.title} | Portfolio`,
       description: project.meta_description || project.short_description,
+      openGraph: {
+        title: `${project.title} | Portfolio`,
+        description: project.meta_description || project.short_description,
+        images: project.featured_image ? [project.featured_image] : undefined,
+        type: 'article',
+        url: `/portfolio/${project.slug}`
+      },
+      alternates: {
+        canonical: `${process.env.NEXT_PUBLIC_APP_URL}/portfolio/${project.slug}`
+      }
     };
   } catch {
     return {
       title: 'Project Not Found | Portfolio',
       description: 'The requested project could not be found.',
+      alternates: {
+        canonical: `${process.env.NEXT_PUBLIC_APP_URL}/portfolio/not-found`
+      }
     };
   }
 }
@@ -54,7 +69,18 @@ async function ProjectContent({ slug }: { slug: string }) {
       notFound();
     }
 
-    return <ProjectView project={project} />;
+    // Generate structured data
+    const jsonLd = generatePortfolioJsonLd(project);
+
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <ProjectView project={project} />
+      </>
+    );
   } catch (error) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-12">
