@@ -9,3 +9,8 @@ declare module 'next-auth' {
     } & DefaultSession['user'];
   }
 }
+
+declare module '@/providers/theme-provider' {
+  export const ThemeProvider: React.FC<{ children: React.ReactNode }>;
+  export const useTheme: () => ThemeContextType;
+}

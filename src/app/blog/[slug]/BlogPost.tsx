@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { formatDate } from "@/lib/utils";
-import type { Post } from "@/types/blog"; // Updated import path
+import type { Post } from "@/types/blog";
 
 interface BlogPostProps {
   post: Post;
