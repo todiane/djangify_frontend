@@ -12,7 +12,6 @@ export function PortfolioList({ portfolios }: PortfolioListProps) {
       {portfolios.map((portfolio) => (
         <PortfolioCard
           key={portfolio.id}
-          id={portfolio.id}
           title={portfolio.title}
           short_description={portfolio.short_description}
           slug={portfolio.slug}

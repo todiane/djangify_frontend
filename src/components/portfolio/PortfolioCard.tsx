@@ -1,10 +1,18 @@
 // src/components/portfolio/PortfolioCard.tsx
 import Link from 'next/link';
 import { OptimizedImage } from '@/components/common/OptimizedImage';
-import { ArrowRight } from 'lucide-react';
-import type { PortfolioCardData } from '@/types/portfolio';
+import { ArrowRight, Github, ExternalLink } from 'lucide-react';
+import type { Project } from '@/types/portfolio';
 
-type PortfolioCardProps = PortfolioCardData;
+type PortfolioCardProps = Pick<Project,
+  'title' |
+  'short_description' |
+  'slug' |
+  'featured_image' |
+  'technologies' |
+  'github_url' |
+  'project_url'
+>;
 
 export function PortfolioCard({
   title,
@@ -12,6 +20,8 @@ export function PortfolioCard({
   slug,
   featured_image,
   technologies,
+  github_url,
+  project_url
 }: PortfolioCardProps) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden h-full">
@@ -21,7 +31,6 @@ export function PortfolioCard({
           alt={title}
           type="portfolio"
           className="object-cover"
-          fill
         />
       </div>
       <div className="p-4">
@@ -39,12 +48,36 @@ export function PortfolioCard({
         <p className="text-gray-600 text-sm line-clamp-2">
           {short_description}
         </p>
-        <Link
-          href={`/portfolio/${slug}`}
-          className="mt-4 block w-full text-blue-600 hover:text-blue-700 py-2 px-4 rounded-md transition-colors border border-blue-600 hover:bg-blue-50 flex items-center justify-center"
-        >
-          Read More <ArrowRight className="ml-2 h-4 w-4" />
-        </Link>
+        <div className="flex flex-wrap gap-2 mt-4">
+          <Link
+            href={`/portfolio/${slug}`}
+            className="flex-1 text-blue-600 hover:text-blue-700 py-2 px-4 rounded-md transition-colors border border-blue-600 hover:bg-blue-50 flex items-center justify-center"
+          >
+            Read More <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+          {github_url && (
+            <a
+              href={github_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors flex items-center gap-2"
+              aria-label="View source code on GitHub"
+            >
+              <Github className="h-4 w-4" />
+            </a>
+          )}
+          {project_url && (
+            <a
+              href={project_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors flex items-center gap-2"
+              aria-label="View live project"
+            >
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );

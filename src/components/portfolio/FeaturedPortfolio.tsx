@@ -2,30 +2,22 @@
 import Link from 'next/link';
 import { OptimizedImage } from '@/components/common/OptimizedImage';
 import { ArrowRight } from 'lucide-react';
+import type { Project } from '@/types/portfolio';
 
-interface FeaturedPortfolioProps {
-  title: string;
-  shortDescription: string;
-  slug: string;
-  featuredImage: string;
-  technologies: Array<{
-    id: number;
-    name: string;
-  }>;
-}
+type FeaturedPortfolioProps = Pick<Project, 'title' | 'short_description' | 'slug' | 'featured_image' | 'technologies'>;
 
 export function FeaturedPortfolio({
   title,
-  shortDescription,
+  short_description,
   slug,
-  featuredImage,
+  featured_image,
   technologies,
 }: FeaturedPortfolioProps) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden h-full">
       <div className="relative aspect-video">
         <OptimizedImage
-          src={featuredImage}
+          src={featured_image}
           alt={title}
           type="portfolio"
           className="object-cover"
@@ -44,7 +36,7 @@ export function FeaturedPortfolio({
           ))}
         </div>
         <h3 className="text-2xl font-semibold mb-2">{title}</h3>
-        <p className="text-gray-600 line-clamp-2">{shortDescription}</p>
+        <p className="text-gray-600 line-clamp-2">{short_description}</p>
         <Link
           href={`/portfolio/${slug}`}
           className="mt-4 block w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors flex items-center justify-center"
