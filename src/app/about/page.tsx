@@ -1,6 +1,7 @@
 // app/about/page.tsx
 import Layout from '@/components/layout/Layout';
 import { Metadata } from 'next';
+import CTASection from '@/components/sections/common/CTASection';
 
 export const metadata: Metadata = {
   title: 'About Me | Your Name',
@@ -16,17 +17,17 @@ export default function AboutPage() {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-12">
-        <div className="max-w-3xl mx-auto">
+        <div className="w-full mx-auto">
           <h1 className="text-4xl font-bold text-center mb-6">About Me</h1>
 
           <div className="bg-white rounded-lg shadow-md mb-8 p-6">
             <h2 className="text-2xl font-semibold mb-4">Hi, I&apos;m [Your Name]</h2>
-            <p className="text-gray-600 mb-4">
+            <p>
               I am a full-stack developer specializing in Django and React. With a passion for creating
               elegant solutions to complex problems, I enjoy building modern web applications that
               deliver great user experiences.
             </p>
-            <p className="text-gray-600">
+            <p>
               When I am not coding, you can find me exploring new technologies, contributing to open-source
               projects, or writing technical articles on my blog.
             </p>
@@ -57,6 +58,12 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
+      <CTASection
+        title="Ready to launch your project?"
+        description="Get started with our Django and React templates today."
+        buttonText="Get Started"
+        buttonLink="/contact"
+      />
     </Layout>
   );
 }

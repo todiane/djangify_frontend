@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <Layout>
       <PageTransition>
-        <div className="min-h-[calc(100vh-64px)]">
+        <div className="w-full">
           <HomeHero />
           <div className="container mx-auto px-4">
             <section className="py-12">
