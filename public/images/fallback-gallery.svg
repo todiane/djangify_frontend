@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#f3f4f6"/>
+  <path d="M600 300 L675 400 L600 500 L525 400 Z" fill="#9ca3af"/>
+  <text x="600" y="550" text-anchor="middle" font-family="system-ui" font-size="24" fill="#6b7280">
+    Gallery Image Unavailable
+  </text>
+</svg>

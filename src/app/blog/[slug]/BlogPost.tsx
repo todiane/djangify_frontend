@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { formatDate } from "@/lib/utils";
+import { getImageUrl, getImageProps } from "@/lib/utils/image";
 import type { Post } from "@/types/blog";
 
 interface BlogPostProps {
@@ -13,19 +14,10 @@ interface BlogPostProps {
 export default function BlogPost({ post }: BlogPostProps) {
   const [imageError, setImageError] = useState(false);
 
-  const getAbsoluteImageUrl = (imageUrl: string) => {
-    if (!imageUrl) return '';
-    const baseUrl = process.env.NODE_ENV === 'development'
-      ? `http://${process.env.NEXT_PUBLIC_BACKEND_HOST || 'localhost'}:${process.env.NEXT_PUBLIC_BACKEND_PORT || '8000'}`
-      : `https://${process.env.NEXT_PUBLIC_BACKEND_HOST}`;
-
-    return imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`;
-  };
-
   const processContent = (content: string) => {
     return content.replace(
       /(src=["'])(\/media\/[^"']*)(["'])/g,
-      (match, start, url, end) => start + getAbsoluteImageUrl(url) + end
+      (match, start, url, end) => start + getImageUrl(url) + end
     );
   };
 
@@ -40,7 +32,7 @@ export default function BlogPost({ post }: BlogPostProps) {
           {post.title}
         </h1>
 
-        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex items-center gap-2 text-sm text-gray-600">
           {formattedDate && (
             <>
               <time dateTime={post.published_date}>
@@ -63,12 +55,12 @@ export default function BlogPost({ post }: BlogPostProps) {
       {post.featured_image && !imageError && (
         <div className="relative aspect-video mb-8 rounded-lg overflow-hidden">
           <Image
-            src={getAbsoluteImageUrl(post.featured_image)}
+            src={getImageUrl(post.featured_image)}
             alt={post.title}
             fill
             priority
+            {...getImageProps('blog')}
             className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             onError={() => setImageError(true)}
           />
         </div>
@@ -81,13 +73,13 @@ export default function BlogPost({ post }: BlogPostProps) {
       />
 
       {/* Tags and Category */}
-      <footer className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
+      <footer className="mt-8 pt-8 border-t">
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
             {post.tags.map((tag) => (
               <span
                 key={tag.slug}
-                className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                className="px-3 py-1 text-sm bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
               >
                 {tag.name}
               </span>
@@ -95,7 +87,7 @@ export default function BlogPost({ post }: BlogPostProps) {
           </div>
         )}
         {post.category && (
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-gray-600">
             Posted in {post.category.name}
           </p>
         )}
