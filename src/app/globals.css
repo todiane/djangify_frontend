@@ -2,7 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
+  p {
+    font-size: 18px;
+    color: #403F3F;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;

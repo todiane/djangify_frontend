@@ -3,7 +3,7 @@ import { ArrowRight, BookOpen } from "lucide-react";
 
 const HomeHero = () => {
   return (
-    <section className="w-full bg-slate-50 -mx-4">
+    <section className="w-full bg-slate-50">
       <div className="container mx-auto">
         <div className="min-h-[40vh] flex flex-col justify-center items-center text-center px-4 py-16">
           <h1 className="text-4xl md:text-6xl font-bold text-[#403F3F] mb-6">

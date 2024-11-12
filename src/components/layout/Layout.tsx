@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X, Home, Briefcase, BookOpen, User, Mail } from 'lucide-react';
 import ThemeToggle from '../common/theme-toggle';
 import SearchBar from '../common/SearchBar';
@@ -84,13 +85,6 @@ export default function Layout({ children }: LayoutProps) {
 
   const SidebarContent = () => (
     <nav className="h-full py-6 px-3 flex flex-col">
-      <div className="px-3 mb-6 hidden md:flex items-center gap-2">
-        <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
-          <span className="text-primary-foreground font-bold">D</span>
-        </div>
-        <span className="text-xl font-bold">Djangify</span>
-      </div>
-
       <div className="space-y-1">
         {navigationItems.map((item) => (
           <Link
@@ -98,16 +92,16 @@ export default function Layout({ children }: LayoutProps) {
             href={item.href}
             onClick={() => isMobile && setIsSidebarOpen(false)}
             className={cn(
-              "flex items-center gap-3 px-3 py-2 text-sm rounded-md",
+              "flex items-center justify-end gap-3 px-3 py-2 text-[20px] rounded-md",
               "transition-colors duration-200",
-              "hover:bg-accent hover:text-accent-foreground",
+              "hover:bg-[#737373]/10",
               pathname === item.href
-                ? "bg-accent text-accent-foreground"
-                : "text-muted-foreground"
+                ? "bg-[#737373]/10 text-[#0C8C9D]"
+                : "text-[#403F3F]"
             )}
           >
-            <item.icon className="h-4 w-4" />
             <span>{item.label}</span>
+            <item.icon className="h-5 w-5 text-[#0C8C9D]" />
           </Link>
         ))}
       </div>
@@ -119,14 +113,37 @@ export default function Layout({ children }: LayoutProps) {
       {/* Header */}
       <header className="fixed top-0 w-full h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
         <div className="container h-full flex items-center justify-between px-4">
-          <div className="flex items-center gap-4 md:hidden">
-            <button
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 hover:bg-accent rounded-md transition-colors"
-              aria-label={isSidebarOpen ? 'Close menu' : 'Open menu'}
-            >
-              {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
+          <div className="flex items-center gap-4">
+            {isMobile && (
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="p-2 hover:bg-[#737373]/10 rounded-md transition-colors"
+                aria-label={isSidebarOpen ? 'Close menu' : 'Open menu'}
+              >
+                {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+            )}
+            <Link href="/" className="flex items-center gap-2">
+              <div className="flex items-center">
+                <Image
+                  src="/djangify-logo.svg"
+                  alt="Djangify Logo"
+                  width={120}
+                  height={30}
+                  className="hidden md:block"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.style.display = 'none';
+                    const fallback = target.nextElementSibling;
+                    if (fallback) {
+                      fallback.classList.remove('hidden');
+                    }
+                  }}
+                />
+                <span className="hidden text-xl font-bold text-[#0C8C9D]">Djangify</span>
+              </div>
+            </Link>
           </div>
 
           <div className="flex-1 max-w-md mx-4">

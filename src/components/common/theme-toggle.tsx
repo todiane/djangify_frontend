@@ -3,6 +3,7 @@
 
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/providers/providers';
+import { cn } from '@/lib/utils';
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -10,7 +11,10 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      className="p-2 hover:bg-accent rounded-md transition-colors"
+      className={cn(
+        "p-2 rounded-md hover:bg-[#737373]/10",
+        "text-[#0C8C9D]"
+      )}
       aria-label="Toggle theme"
     >
       {theme === 'light' ? (
@@ -21,3 +25,4 @@ export default function ThemeToggle() {
     </button>
   );
 }
+
