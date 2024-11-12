@@ -17,3 +17,17 @@ export type NextContext = {
   req?: NextApiRequest;
   res?: NextApiResponse;
 } | undefined;
+
+
+export interface PaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
+export interface ApiError {
+  status: number;
+  message: string;
+  errors?: Record<string, string[]>;
+}
