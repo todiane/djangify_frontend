@@ -24,7 +24,7 @@ export function BlogHeader({ post }: BlogHeaderProps) {
       <div className="space-y-4">
         <div className="space-y-2">
           {post.category && (
-            <Link href={`/blog/category/${post.category.slug}`}>
+            <Link href={{ pathname: `/blog/category/${post.category.slug}` }}>
               <span className="inline-flex px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-full hover:bg-blue-200 transition-colors">
                 {post.category.name}
               </span>

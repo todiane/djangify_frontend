@@ -53,8 +53,8 @@ const nextConfig = {
   },
   // Compression and performance optimizations
   compress: true,
-  poweredByHeader: false, // Remove X-Powered-By header
-  productionBrowserSourceMaps: false, // Disable source maps in production
+  poweredByHeader: false,
+  productionBrowserSourceMaps: false,
   // Add headers for security
   async headers() {
     return [
@@ -83,22 +83,6 @@ const nextConfig = {
           }
         ]
       }
-    ]
-  },
-  // Add redirects for www to non-www
-  async redirects() {
-    return [
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: 'www.djangify.com',
-          },
-        ],
-        destination: 'https://djangify.com/:path*',
-        permanent: true,
-      },
     ]
   }
 };

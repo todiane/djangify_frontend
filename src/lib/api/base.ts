@@ -1,7 +1,5 @@
 // src/lib/api/base.ts
 import axios from 'axios';
-import { getSession } from '../auth/session';
-import { refreshToken } from '../auth/auth';
 
 export const api = axios.create({
   baseURL: '/api',
@@ -10,39 +8,33 @@ export const api = axios.create({
   },
 });
 
-// Request interceptor
-api.interceptors.request.use(
-  async (config) => {
-    const session = await getSession();
-    if (session?.accessToken) {
-      config.headers.Authorization = `Bearer ${session.accessToken}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Response interceptor
+// Response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
-
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      const session = await getSession();
-
-      if (session?.refreshToken) {
-        try {
-          const newTokens = await refreshToken(session.refreshToken);
-          originalRequest.headers.Authorization = `Bearer ${newTokens.access}`;
-          return api(originalRequest);
-        } catch (refreshError) {
-          console.error('Token refresh failed:', refreshError);
-          return Promise.reject(refreshError);
-        }
+    // General error handling
+    if (error.response) {
+      // Handle different status codes if needed
+      switch (error.response.status) {
+        case 404:
+          console.error('Resource not found');
+          break;
+        case 500:
+          console.error('Server error');
+          break;
+        default:
+          console.error('API error:', error.response.data);
       }
+    } else if (error.request) {
+      // Network error
+      console.error('Network error - no response received');
+    } else {
+      // Something else went wrong
+      console.error('Error:', error.message);
     }
+
     return Promise.reject(error);
   }
 );
+
+export default api;

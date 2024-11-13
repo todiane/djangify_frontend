@@ -37,7 +37,7 @@ export function BlogPostCard({ post }: BlogPostCardProps) {
             Read More <ArrowRight className="ml-2 w-4 h-4" />
           </Link>
           <div className="text-sm text-gray-500">
-            in <Link href={`/blog/category/${post.category.slug}`} className="hover:text-blue-600">{post.category.name}</Link>
+            in <Link href={{ pathname: `/blog/category/${post.category.slug}` }} className="hover:text-blue-600">{post.category.name}</Link>
           </div>
         </div>
       </div>
