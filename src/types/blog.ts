@@ -41,8 +41,6 @@ export interface Post extends BasePost {
   updated_at?: string;
   is_featured?: boolean;
   comments?: Comment[];
-  reading_time?: number;
-  word_count?: number;
   meta_description?: string;
   author?: {
     name: string;
@@ -57,8 +55,6 @@ export interface Post extends BasePost {
 // Featured post type can stay the same but inherit from Post
 export interface FeaturedPost extends Post {
   is_featured: true;  // Override to make it required and true
-  reading_time: number;  // Required for FeaturedPost
-  word_count: number;    // Required for FeaturedPost
   content: string;
 }
 

@@ -40,12 +40,6 @@ export function BlogHeader({ post }: BlogHeaderProps) {
             {new Date(post.published_date).toLocaleDateString()}
           </time>
           <span>•</span>
-          {post.reading_time && (
-            <>
-              <span>{post.reading_time} min read</span>
-              <span>•</span>
-            </>
-          )}
           <div className="flex items-center gap-1">
             <MessageCircle className="h-4 w-4" />
             <span>{post.comments?.length || 0} comments</span>

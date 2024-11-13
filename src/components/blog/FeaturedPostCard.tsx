@@ -44,11 +44,6 @@ export function FeaturedPostCard({
               >
                 {new Date(post.published_date).toLocaleDateString()}
               </time>
-              {post.reading_time && (
-                <span className="text-sm text-white/90">
-                  {post.reading_time} min read
-                </span>
-              )}
             </div>
 
             {/* Title and Excerpt */}

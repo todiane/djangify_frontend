@@ -41,13 +41,7 @@ export default function BlogPost({ post }: BlogPostProps) {
               <span>•</span>
             </>
           )}
-          {post.reading_time && <span>{post.reading_time} min read</span>}
-          {post.word_count && (
-            <>
-              <span>•</span>
-              <span>{post.word_count} words</span>
-            </>
-          )}
+
         </div>
       </header>
 

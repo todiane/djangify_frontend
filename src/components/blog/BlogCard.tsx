@@ -53,24 +53,10 @@ export function BlogCard({ post, priority = false }: BlogCardProps) {
           {post.excerpt}
         </p>
 
-        <div className="mt-auto flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            {post.reading_time && (
-              <>
-                <span>{post.reading_time} min read</span>
-                <span>•</span>
-              </>
-            )}
-            {post.word_count && (
-              <span>{post.word_count.toLocaleString()} words</span>
-            )}
-          </div>
-
-          <span className="inline-flex items-center text-sm font-medium text-blue-600 group-hover:text-blue-700 transition-colors">
-            Read More
-            <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-          </span>
-        </div>
+        <span className="inline-flex items-center text-sm font-medium text-blue-600 group-hover:text-blue-700 transition-colors">
+          Read More
+          <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+        </span>
       </div>
     </article>
   );

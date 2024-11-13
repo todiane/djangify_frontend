@@ -22,23 +22,9 @@ export function BlogPostCard({ post }: BlogPostCardProps) {
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-      </div>
-      <div className="p-6">
-        <h3 className="text-xl font-semibold text-gray-900">{post.title}</h3>
-        <div className="flex items-center gap-2 text-sm text-gray-500 mt-2">
-          <time>{new Date(post.published_date).toLocaleDateString()}</time>
-          {post.reading_time && (
-            <>
-              <span>•</span>
-              <span>{post.reading_time} min read</span>
-            </>
-          )}
-          {post.word_count && (
-            <>
-              <span>•</span>
-              <span>{post.word_count} words</span>
-            </>
-          )}
+        <div className="p-6">
+          <h3 className="text-xl font-semibold text-gray-900">{post.title}</h3>
+
         </div>
       </div>
       <div className="px-6 pb-6">

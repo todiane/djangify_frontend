@@ -67,15 +67,10 @@ function BlogPostCard({ post }: { post: FeaturedPost }) {
           <p className="text-gray-600 text-sm line-clamp-2 mb-4">
             {post.excerpt}
           </p>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-500">
-              {post.reading_time} min read
-            </span>
-            <span className="inline-flex items-center text-blue-600 group-hover:text-blue-700">
-              Read More
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </span>
-          </div>
+          <span className="inline-flex items-center text-blue-600 group-hover:text-blue-700">
+            Read More
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </span>
         </div>
       </Link>
     </article>
@@ -106,8 +101,6 @@ export function LatestPosts() {
             ...post,
             is_featured: true as const,
             content: post.content || '',
-            reading_time: post.reading_time || 5,
-            word_count: post.word_count || post.content.split(/\s+/).length,
           } satisfies FeaturedPost));
 
         setPosts(featuredPosts);

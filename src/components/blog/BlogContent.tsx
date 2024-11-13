@@ -5,30 +5,11 @@ import { Post } from '@/types/blog';
 import { blogApi } from '@/lib/api/blog';
 import { FeaturedPosts, BlogCard } from '@/components/blog';
 
-function calculateReadingTime(content: string): number {
-  const wordsPerMinute = 200;
-  const wordCount = content.trim().split(/\s+/).length;
-  return Math.ceil(wordCount / wordsPerMinute);
-}
-
-function calculateWordCount(content: string): number {
-  return content.trim().split(/\s+/).length;
-}
-
 export async function BlogContent() {
   try {
     const data = await blogApi.getBlogPosts();
-
-    // Transform posts to include reading time and word count
-    const enhancedPosts = data.data.results.map((post: Post) => ({
-      ...post,
-      reading_time: calculateReadingTime(post.content),
-      word_count: calculateWordCount(post.content)
-    }));
-
-    // Fix type annotations in the filter functions
-    const featuredPosts = enhancedPosts.filter((post: Post): post is Post => post.is_featured === true);
-    const recentPosts = enhancedPosts.filter((post: Post) => !post.is_featured);
+    const featuredPosts = data.data.results.filter((post: Post): post is Post => post.is_featured === true);
+    const recentPosts = data.data.results.filter((post: Post) => !post.is_featured);
 
     return (
       <>
