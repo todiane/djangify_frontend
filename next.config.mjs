@@ -42,6 +42,15 @@ const nextConfig = {
   generateBuildId: async () => {
     return 'build-' + Date.now()
   },
+  // Add rewrite rules for API proxying
+  async rewrites() {
+    return [
+      {
+        source: '/api/v1/:path*',
+        destination: `${process.env.NEXT_PUBLIC_DJANGO_URL}/api/v1/:path*`
+      }
+    ]
+  },
   // Compression and performance optimizations
   compress: true,
   poweredByHeader: false, // Remove X-Powered-By header
