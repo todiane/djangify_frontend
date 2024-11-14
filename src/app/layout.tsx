@@ -2,10 +2,12 @@
 import { Suspense } from 'react';
 import { ErrorBoundary } from '@/components/error';
 import Providers from '@/providers/providers';
+import { AuthProvider } from '@/contexts/AuthContext';
 import { Poppins } from 'next/font/google';
 import { Metadata } from 'next';
 import Loading from './loading';
 import './globals.css';
+import QueryProvider from '@/providers/query-provider';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -25,13 +27,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.variable} font-sans antialiased`}>
-        <ErrorBoundary>
-          <Providers>
-            <Suspense fallback={<Loading />}>
-              {children}
-            </Suspense>
-          </Providers>
-        </ErrorBoundary>
+        <QueryProvider>
+          <ErrorBoundary>
+            <Providers>
+              <AuthProvider>
+                <Suspense fallback={<Loading />}>
+                  {children}
+                </Suspense>
+              </AuthProvider>
+            </Providers>
+          </ErrorBoundary>
+        </QueryProvider>
       </body>
     </html>
   );

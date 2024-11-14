@@ -6,6 +6,7 @@ import { blogApi } from '@/lib/api/blog';
 import type { Post, PaginatedResponse } from '@/types/blog';
 import { FeaturedPosts, BlogCard } from '@/components/blog';
 import { NewsletterForm } from '@/components/forms/NewsletterForm';
+import { PostsLoadingSkeleton } from './PostsLoadingSkeleton';
 
 export function BlogContent() {
   const {
@@ -17,16 +18,21 @@ export function BlogContent() {
     error
   } = useInfiniteQuery({
     queryKey: ['blogPosts'],
-    queryFn: async ({ pageParam }) => {
-      const response = await blogApi.getBlogPosts({
-        page: pageParam,
-        page_size: 9
-      });
-      return response.data;
+    queryFn: async ({ pageParam = 1 }) => {
+      try {
+        const response = await blogApi.getBlogPosts({
+          page: pageParam,
+          page_size: 9
+        });
+        return response.data;
+      } catch (err) {
+        console.error('API Error:', err);
+        throw err;
+      }
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage: PaginatedResponse<Post>) => {
-      if (!lastPage.next) return undefined;
+      if (!lastPage?.next) return undefined;
       try {
         const url = new URL(lastPage.next);
         const nextPage = url.searchParams.get('page');
@@ -37,23 +43,24 @@ export function BlogContent() {
     }
   });
 
-  // Get all posts from all pages
-  const allPosts = data?.pages.flatMap(page => page.results) ?? [];
+  if (status === 'pending') {
+    return <PostsLoadingSkeleton />;
+  }
 
-  // Separate featured and recent posts
-  const featuredPosts = allPosts.filter((post): post is Post => post.is_featured === true);
-  const recentPosts = allPosts.filter(post => !post.is_featured);
-
-  if (status === 'error') {
+  if (status === 'error' && error instanceof Error) {
     return (
       <div className="rounded-lg bg-red-50 p-4 text-red-800">
         <p className="flex items-center gap-2">
           <span className="text-lg">⚠️</span>
-          {error instanceof Error ? error.message : 'Failed to load blog posts. Please try again later.'}
+          {error.message}
         </p>
       </div>
     );
   }
+
+  const posts = data?.pages.flatMap(page => page.results) ?? [];
+  const featuredPosts = posts.filter((post): post is Post => post.is_featured === true);
+  const recentPosts = posts.filter(post => !post.is_featured);
 
   return (
     <>

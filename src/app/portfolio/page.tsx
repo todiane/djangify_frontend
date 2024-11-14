@@ -34,14 +34,13 @@ export default function PortfolioPage() {
   );
 }
 
+// src/app/portfolio/page.tsx
 async function PortfolioContent() {
   try {
-    const [projectsResponse, technologiesResponse] = await Promise.all([
-      portfolioApi.getProjects(),
-      portfolioApi.getTechnologies(),
-    ]);
+    // Updated method name
+    const response = await portfolioApi.getProjects();
 
-    if (!projectsResponse.data.results.length) {
+    if (!response.data.results.length) {
       return (
         <div className="text-center py-12">
           <p className="text-gray-600">No projects available at the moment.</p>
@@ -49,12 +48,7 @@ async function PortfolioContent() {
       );
     }
 
-    return (
-      <PortfolioGrid
-        initialItems={projectsResponse.data.results}
-        technologies={technologiesResponse.data.results}
-      />
-    );
+    return <PortfolioGrid initialItems={response.data.results} technologies={[]} />;
   } catch (error) {
     return (
       <div className="flex items-center gap-2 p-4 text-red-800 bg-red-50 rounded-md mt-6">

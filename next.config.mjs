@@ -23,8 +23,8 @@ const nextConfig = {
     ],
     domains: [
       'localhost',
-      'djangify-backend.onrender.com',
-      'djangify-frontend.onrender.com',
+      'djangify_backend.up.railway.app',
+      'djangify.up.railway.app',
       'djangify.com'
     ],
     // Optimize image handling
@@ -46,8 +46,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/v1/:path*',
-        destination: `${process.env.NEXT_PUBLIC_DJANGO_URL}/api/v1/:path*`
+        source: '/api/:path*',
+        destination: `${process.env.NEXT_PUBLIC_DJANGO_URL}/api/:path*`
       }
     ]
   },
