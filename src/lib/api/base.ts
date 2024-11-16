@@ -4,7 +4,7 @@ import { auth } from '../auth';
 import { authApi } from './auth';
 
 export const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: '/api/',
   headers: {
     'Content-Type': 'application/json',
   },
