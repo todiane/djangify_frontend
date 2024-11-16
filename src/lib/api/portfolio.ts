@@ -6,24 +6,24 @@ import { PaginatedResponse } from '@/types/api';
 export const portfolioApi = {
   // Read-only methods
   getProjects: () =>
-    api.get<PaginatedResponse<Project>>('/portfolio/projects/'),
+    api.get<PaginatedResponse<Project>>('portfolio/projects/'),
 
   getProjectBySlug: (slug: string) =>
-    api.get<Project>(`/portfolio/projects/${slug}/`),
+    api.get<Project>(`portfolio/projects/${slug}/`),
 
   getTechnologies: () =>
-    api.get<PaginatedResponse<Technology>>('/portfolio/technologies/'),
+    api.get<PaginatedResponse<Technology>>('portfolio/technologies/'),
 
   // Admin methods
   createProject: (data: CreateProjectData) =>
-    api.post<Project>('/portfolio/projects/', data),
+    api.post<Project>('portfolio/projects/', data),
 
   updateProject: (slug: string, data: UpdateProjectData) =>
-    api.put<Project>(`/portfolio/projects/${slug}/`, data),
+    api.put<Project>(`portfolio/projects/${slug}/`, data),
 
   deleteProject: (slug: string) =>
-    api.delete(`/portfolio/projects/${slug}/`),
+    api.delete(`portfolio/projects/${slug}/`),
 
   toggleProjectFeatured: (slug: string) =>
-    api.post<Project>(`/portfolio/projects/${slug}/toggle_featured/`),
+    api.post<Project>(`portfolio/projects/${slug}/toggle_featured/`),
 };

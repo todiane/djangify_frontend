@@ -2,8 +2,22 @@
 import axios from 'axios';
 import type { Project, PaginatedResponse } from '@/types/portfolio';
 
+// src/lib/api/base.ts or src/lib/api.ts
+const getBaseUrl = () => {
+  if (typeof window === 'undefined') {
+    // Server-side
+    return process.env.NEXT_PUBLIC_DJANGO_URL || 'http://localhost:8000';
+  }
+  // Client-side
+  if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:8000';
+  }
+  // Production - use relative URL to avoid cross-domain issues
+  return '';
+};
+
 export const api = axios.create({
-  baseURL: '/api/',
+  baseURL: `${getBaseUrl()}/api/v1/`,  // Note: changed from '/api/' to '/api/v1/'
   headers: {
     'Content-Type': 'application/json',
   },
@@ -17,19 +31,16 @@ api.interceptors.response.use(
   }
 );
 
-// src/lib/api.ts
 export const portfolioApi = {
-  // Change back to getProjects to match the type declaration
   getProjects: () =>
-    api.get<PaginatedResponse<Project>>('/v1/portfolio/projects/'),
+    api.get<PaginatedResponse<Project>>('portfolio/projects/'),
 
-  // Add getTechnologies back
   getTechnologies: () =>
-    api.get<PaginatedResponse<Project>>('/v1/portfolio/technologies/'),
+    api.get<PaginatedResponse<Project>>('portfolio/technologies/'),
 
   getProject: (slug: string) =>
-    api.get<Project>(`/v1/portfolio/projects/${slug}/`),
+    api.get<Project>(`portfolio/projects/${slug}/`),
 
   getBlogPosts: () =>
-    api.get('/v1/blog/posts/'),
+    api.get('blog/posts/'),
 };

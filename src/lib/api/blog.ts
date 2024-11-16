@@ -8,7 +8,7 @@ export const blogApi = {
    * Get paginated blog posts with optional filtering
    */
   getBlogPosts: async (params?: BlogFilter) => {
-    const response = await api.get<PaginatedResponse<Post>>('/blog/posts/', {
+    const response = await api.get<PaginatedResponse<Post>>('blog/posts/', {
       params: {
         page: params?.page || 1,
         page_size: params?.page_size || 9,
@@ -25,7 +25,7 @@ export const blogApi = {
    * Get a single blog post by slug
    */
   getBlogPost: async (slug: string) => {
-    const response = await api.get<Post>(`/blog/posts/${slug}/`);
+    const response = await api.get<Post>(`blog/posts/${slug}/`);
     return response;
   },
 
@@ -33,7 +33,7 @@ export const blogApi = {
    * Get featured blog posts
    */
   getFeaturedPosts: async () => {
-    const response = await api.get<PaginatedResponse<FeaturedPost>>('/blog/posts/', {
+    const response = await api.get<PaginatedResponse<FeaturedPost>>('blog/posts/', {
       params: {
         is_featured: true,
         page_size: 3,  // Typically we only need a few featured posts
@@ -47,7 +47,7 @@ export const blogApi = {
    * Get posts by category slug
    */
   getPostsByCategory: async (categorySlug: string, params?: BlogFilter) => {
-    const response = await api.get<PaginatedResponse<Post>>('/blog/posts/', {
+    const response = await api.get<PaginatedResponse<Post>>('blog/posts/', {
       params: {
         category__slug: categorySlug,
         page: params?.page || 1,
@@ -62,7 +62,7 @@ export const blogApi = {
    * Get posts by tag slug
    */
   getPostsByTag: async (tagSlug: string, params?: BlogFilter) => {
-    const response = await api.get<PaginatedResponse<Post>>('/blog/posts/', {
+    const response = await api.get<PaginatedResponse<Post>>('blog/posts/', {
       params: {
         tags__slug: tagSlug,
         page: params?.page || 1,
@@ -77,7 +77,7 @@ export const blogApi = {
    * Get related posts
    */
   getRelatedPosts: async (postId: number, limit: number = 3) => {
-    const response = await api.get<PaginatedResponse<Post>>('/blog/posts/', {
+    const response = await api.get<PaginatedResponse<Post>>('blog/posts/', {
       params: {
         related_to: postId,
         page_size: limit,
@@ -91,7 +91,7 @@ export const blogApi = {
    * Search posts
    */
   searchPosts: async (query: string, params?: BlogFilter) => {
-    const response = await api.get<PaginatedResponse<Post>>('/blog/posts/', {
+    const response = await api.get<PaginatedResponse<Post>>('blog/posts/', {
       params: {
         search: query,
         page: params?.page || 1,

@@ -27,16 +27,24 @@ export function OptimizedImage({
   const [isLoading, setIsLoading] = useState(true);
   const imageProps = useOptimizedImage({ src, type, alt });
 
+  // Ensure we have a valid src
+  if (!imageProps.src) {
+    return null;
+  }
+
   return (
     <div className={`relative ${isLoading ? 'animate-pulse bg-gray-200' : ''}`}>
       <Image
         {...imageProps}
         fill={fill}
-        alt={alt} // Explicitly set alt to satisfy TypeScript
-        src={imageProps.src as string} // Type assertion to satisfy TypeScript
-        className={`duration-700 ease-in-out ${isLoading ? 'scale-110 blur-2xl grayscale' : 'scale-100 blur-0 grayscale-0'
+        alt={alt}
+        src={imageProps.src as string}
+        className={`duration-700 ease-in-out ${isLoading
+            ? 'scale-110 blur-2xl grayscale'
+            : 'scale-100 blur-0 grayscale-0'
           } ${className}`}
         priority={priority}
+        loading={priority ? undefined : 'lazy'}
         onLoadingComplete={() => setIsLoading(false)}
         onClick={onClick}
       />

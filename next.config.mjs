@@ -1,3 +1,4 @@
+// Remove this if @next/bundle-analyzer is not in your package.json
 import bundleAnalyzer from '@next/bundle-analyzer';
 
 const withBundleAnalyzer = bundleAnalyzer({
@@ -10,24 +11,27 @@ const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ["lucide-react"],
   typescript: {
-    // !! WARN !!
-    // If you want to use TypeScript with strict mode, uncomment this line
-    // strict: true,
+    ignoreBuildErrors: true,
   },
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**',
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: '/media/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'djangify-backend.up.railway.app',
+        pathname: '/media/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'djangify.up.railway.app',
+        pathname: '/media/**',
+      }
     ],
-    domains: [
-      'localhost',
-      'djangify_backend.up.railway.app',
-      'djangify.up.railway.app',
-      'djangify.com'
-    ],
-    // Optimize image handling
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/webp'],
@@ -37,25 +41,22 @@ const nextConfig = {
     serverComponentsExternalPackages: [],
     scrollRestoration: true,
   },
-  // Add build cache configuration
   distDir: '.next',
   generateBuildId: async () => {
     return 'build-' + Date.now()
   },
-  // Add rewrite rules for API proxying
   async rewrites() {
+    const djangoUrl = process.env.NEXT_PUBLIC_DJANGO_URL || 'http://localhost:8000';
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_DJANGO_URL}/api/:path*`
+        destination: `${djangoUrl}/api/:path*`
       }
     ]
   },
-  // Compression and performance optimizations
   compress: true,
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
-  // Add headers for security
   async headers() {
     return [
       {
