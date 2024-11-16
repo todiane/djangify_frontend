@@ -1,4 +1,4 @@
-// src/app/portfolio/[slug]/ProjectView.tsx
+// src/components/portfolio/ProjectView.tsx
 'use client';
 
 import { useState, useMemo } from 'react';

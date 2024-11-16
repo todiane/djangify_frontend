@@ -1,22 +1,15 @@
 // src/app/layout.tsx
-import { Suspense } from 'react';
-import { ErrorBoundary } from '@/components/error';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import Providers from '@/providers/providers';
-import { AuthProvider } from '@/contexts/AuthContext';
-import { Poppins } from 'next/font/google';
-import { Metadata } from 'next';
-import Loading from './loading';
+import Layout from '@/components/layout/Layout';
 import './globals.css';
-import QueryProvider from '@/providers/query-provider';
 
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-poppins',
-});
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  // ... your existing metadata
+  title: 'Djangify',
+  description: 'Transform your Django projects with automated structure generation',
 };
 
 export default function RootLayout({
@@ -26,18 +19,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${poppins.variable} font-sans antialiased`}>
-        <QueryProvider>
-          <ErrorBoundary>
-            <Providers>
-              <AuthProvider>
-                <Suspense fallback={<Loading />}>
-                  {children}
-                </Suspense>
-              </AuthProvider>
-            </Providers>
-          </ErrorBoundary>
-        </QueryProvider>
+      <body className={inter.className}>
+        <Providers>
+          <Layout>{children}</Layout>
+        </Providers>
       </body>
     </html>
   );

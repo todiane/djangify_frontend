@@ -7,7 +7,6 @@ import type { Post, PaginatedResponse } from '@/types/blog';
 import { FeaturedPosts, BlogCard } from '@/components/blog';
 import { NewsletterForm } from '@/components/forms/NewsletterForm';
 import { PostsLoadingSkeleton } from './PostsLoadingSkeleton';
-import { AlertCircle } from 'lucide-react';
 
 export function BlogContent() {
   const {
@@ -20,13 +19,13 @@ export function BlogContent() {
   } = useInfiniteQuery({
     queryKey: ['blogPosts'],
     queryFn: async ({ pageParam = 1 }) => {
+      const url = `/api/v1/blog/posts/?page=${pageParam}&page_size=9`;
+      console.log('Requesting URL:', url);
       try {
-        console.log('Fetching page:', pageParam);
         const response = await blogApi.getBlogPosts({
           page: pageParam,
           page_size: 9
         });
-        console.log('API Response:', response.data);
         return response.data;
       } catch (err) {
         console.error('API Error:', err);
@@ -51,16 +50,13 @@ export function BlogContent() {
     return <PostsLoadingSkeleton />;
   }
 
-  if (status === 'error') {
+  if (status === 'error' && error instanceof Error) {
     return (
       <div className="rounded-lg bg-red-50 p-4 text-red-800">
-        <div className="flex items-center gap-2">
-          <AlertCircle className="h-5 w-5" />
-          <p>{error instanceof Error ? error.message : 'Failed to load blog posts'}</p>
-        </div>
-        <pre className="mt-2 text-sm">
-          {error instanceof Error && error.stack}
-        </pre>
+        <p className="flex items-center gap-2">
+          <span className="text-lg">⚠️</span>
+          {error.message}
+        </p>
       </div>
     );
   }
@@ -76,6 +72,17 @@ export function BlogContent() {
           <FeaturedPosts posts={featuredPosts.slice(0, 3)} />
         </div>
       )}
+
+      <div className="bg-slate-50 rounded-lg p-8 mb-12">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
+          <p className="text-slate-600 mb-6">
+            Subscribe to our newsletter for the latest articles, tutorials, and insights
+            about web development, React, and Next.js.
+          </p>
+          <NewsletterForm />
+        </div>
+      </div>
 
       <div className="space-y-8">
         <h2 className="text-3xl font-bold text-center">Recent Posts</h2>

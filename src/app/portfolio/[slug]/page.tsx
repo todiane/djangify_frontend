@@ -1,9 +1,8 @@
 // src/app/portfolio/[slug]/page.tsx
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
-import { ProjectView } from './ProjectView';
+import { ProjectView } from '@/components/portfolio/ProjectView';
 import { portfolioApi } from '@/lib/api/portfolio';
-import Layout from '@/components/layout/Layout';
 import { AlertCircle } from "lucide-react";
 import { generatePortfolioJsonLd } from '@/lib/metadata';
 import { Metadata } from 'next';
@@ -46,17 +45,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default function ProjectPage({ params }: PageProps) {
   return (
-    <Layout>
-      <Suspense fallback={
-        <div className="max-w-7xl mx-auto px-4 animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/3 mb-4" />
-          <div className="h-4 bg-gray-200 rounded w-2/3 mb-8" />
-          <div className="aspect-video bg-gray-200 rounded mb-8" />
-        </div>
-      }>
-        <ProjectContent slug={params.slug} />
-      </Suspense>
-    </Layout>
+    <Suspense fallback={
+      <div className="max-w-7xl mx-auto px-4 animate-pulse">
+        <div className="h-8 bg-gray-200 rounded w-1/3 mb-4" />
+        <div className="h-4 bg-gray-200 rounded w-2/3 mb-8" />
+        <div className="aspect-video bg-gray-200 rounded mb-8" />
+      </div>
+    }>
+      <ProjectContent slug={params.slug} />
+    </Suspense>
   );
 }
 

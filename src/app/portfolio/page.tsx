@@ -3,7 +3,6 @@ import { Suspense } from 'react';
 import { PortfolioGrid } from "@/components/portfolio/PortfolioGrid";
 import { LoadingPortfolio } from "@/components/portfolio/LoadingPortfolio";
 import { portfolioApi } from '@/lib/api/portfolio';
-import Layout from '@/components/layout/Layout';
 import { AlertCircle } from "lucide-react";
 
 export const metadata = {
@@ -15,22 +14,20 @@ export const revalidate = 3600; // Revalidate every hour
 
 export default function PortfolioPage() {
   return (
-    <Layout>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <h1 className="text-4xl text-center font-bold tracking-tight">Portfolio</h1>
-            <p className="text-gray-600 text-center">
-              Explore my latest web development projects and experiments.
-            </p>
-          </div>
-
-          <Suspense fallback={<LoadingPortfolio />}>
-            <PortfolioContent />
-          </Suspense>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <h1 className="text-4xl text-center font-bold tracking-tight">Portfolio</h1>
+          <p className="text-gray-600 text-center">
+            Explore my latest web development projects and experiments.
+          </p>
         </div>
+
+        <Suspense fallback={<LoadingPortfolio />}>
+          <PortfolioContent />
+        </Suspense>
       </div>
-    </Layout>
+    </div>
   );
 }
 

@@ -32,10 +32,17 @@ export function OptimizedImage({
     return null;
   }
 
+  // Remove fill prop if we're using width/height
+  const imgProps = { ...imageProps };
+  if (fill) {
+    delete imgProps.width;
+    delete imgProps.height;
+  }
+
   return (
     <div className={`relative ${isLoading ? 'animate-pulse bg-gray-200' : ''}`}>
       <Image
-        {...imageProps}
+        {...imgProps}
         fill={fill}
         alt={alt}
         src={imageProps.src as string}

@@ -1,23 +1,31 @@
-// src/app/blog/[slug]/BlogPost.tsx
+// src/components/blog/BlogPost.tsx
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { formatDate } from "@/lib/utils";
-import { getImageUrl, getImageProps } from "@/lib/utils/image";
+import Image from 'next/image';
 import type { Post } from "@/types/blog";
 
 interface BlogPostProps {
   post: Post;
 }
 
-export default function BlogPost({ post }: BlogPostProps) {
+const BlogPost = ({ post }: BlogPostProps) => {
   const [imageError, setImageError] = useState(false);
+
+  const getFullImageUrl = (src: string) => {
+    if (src.startsWith('http')) return src;
+    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+    return src.startsWith('/') ? `${baseUrl}${src}` : `${baseUrl}/${src}`;
+  };
 
   const processContent = (content: string) => {
     return content.replace(
-      /(src=["'])(\/media\/[^"']*)(["'])/g,
-      (match, start, url, end) => start + getImageUrl(url) + end
+      /<img.*?src=["'](\/[^"']*?)["'].*?>/g,
+      (match, src) => {
+        const fullUrl = getFullImageUrl(src);
+        return `<img src="${fullUrl}" class="w-full h-auto rounded-lg" alt="Content image" />`;
+      }
     );
   };
 
@@ -25,8 +33,7 @@ export default function BlogPost({ post }: BlogPostProps) {
   const processedContent = processContent(post.content);
 
   return (
-    <article className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
-      {/* Post Header */}
+    <article className="max-w-3xl mx-auto">
       <header className="space-y-4 mb-8">
         <h1 className="text-4xl font-bold tracking-tight">
           {post.title}
@@ -41,32 +48,33 @@ export default function BlogPost({ post }: BlogPostProps) {
               <span>•</span>
             </>
           )}
-
+          {post.category && (
+            <span className="text-blue-600">{post.category.name}</span>
+          )}
         </div>
       </header>
 
       {/* Featured Image */}
       {post.featured_image && !imageError && (
-        <div className="relative aspect-video mb-8 rounded-lg overflow-hidden">
-          <Image
-            src={getImageUrl(post.featured_image)}
-            alt={post.title}
-            fill
-            priority
-            {...getImageProps('blog')}
-            className="object-cover"
-            onError={() => setImageError(true)}
-          />
+        <div className="mb-8">
+          <div className="relative aspect-[16/9]">
+            <Image
+              src={getFullImageUrl(post.featured_image)}
+              alt={post.title}
+              fill
+              className="rounded-lg object-cover"
+              priority
+              onError={() => setImageError(true)}
+            />
+          </div>
         </div>
       )}
 
-      {/* Post Content */}
       <div
         className="prose prose-lg max-w-none prose-img:rounded-lg prose-a:text-blue-600 dark:prose-invert"
         dangerouslySetInnerHTML={{ __html: processedContent }}
       />
 
-      {/* Tags and Category */}
       <footer className="mt-8 pt-8 border-t">
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
@@ -88,4 +96,6 @@ export default function BlogPost({ post }: BlogPostProps) {
       </footer>
     </article>
   );
-}
+};
+
+export default BlogPost;
