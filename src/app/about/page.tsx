@@ -28,10 +28,10 @@ export default function AboutPage() {
                 elegant, minimalistic, AI powered solutions to complex problems. I love building modern web applications that deliver great user experiences because they are useful and easy to use.
               </p>
               <p className="text-lg text-muted-foreground mb-8 mt-4">
-                I am embracing my <span className="font-bold text-xl style={{ color: '#0C8C9D' }}">"Build and Bloom Era"</span>, and after over 10 years of working freelance with WordPress I have taken on a new challenge of selling what I build. While I don't work with clients anymore, I never say never!
+                I am embracing my <span className="font-bold text-xl">&quot;Build and Bloom Era&quot;</span>, and after over 10 years of working freelance with WordPress I have taken on a new challenge of selling what I build. While I don&apos;t work with clients anymore, I never say never!
               </p>
               <p>
-                When I am not coding, you will find me writing content, creating paperback notebooks (I still love paper!), and focusing on my passion for personal development and "trying" to keep fit.
+                When I am not coding, you will find me writing content, creating paperback notebooks - I still love paper!, and focusing on my passion for personal development and &quot;trying&quot; to keep fit.
               </p>
             </div>
             <div className="md:w-1/2 flex justify-center">
@@ -49,9 +49,9 @@ export default function AboutPage() {
             <div className="bg-white rounded-lg shadow-md p-6">
               <h3 className="text-xl font-semibold mb-3">Tech Stack</h3>
               <ul className="space-y-2 text-gray-600">
-                <li>• Python & AI</li>
-                <li>• Django & Flask</li>
-                <li>• React & Next.js</li>
+                <li>• Python and AI</li>
+                <li>• Django and Flask</li>
+                <li>• React and Next.js</li>
                 <li>• TypeScript</li>
                 <li>• PostgreSQL</li>
                 <li>• APIs</li>
