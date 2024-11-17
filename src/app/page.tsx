@@ -11,9 +11,11 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <section className="py-12">
             <div className="container">
-              <h1 className="text-4xl font-bold mb-6">Welcome to Djangify</h1>
+              <h1 className="text-4xl font-bold mb-6">
+                Building Practical Solutions with Django and Next.js
+              </h1>
               <p className="text-lg text-muted-foreground mb-8">
-                Transform your Django projects with automated structure generation.
+                Here, you'll find a selection of projects crafted with Django, Flask, AI, APIs, and Next.js. These projects reflect my approach to web development—focused on practicality and functionality. Offering pre-built digital solutions that serve a range of business needs, each product is crafted with care and available for purchase. If you see something that resonates with your business needs, feel free to get in touch.
               </p>
             </div>
           </section>

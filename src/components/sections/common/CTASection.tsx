@@ -35,10 +35,10 @@ const CTASection = ({
 
           <a
             href={buttonLink}
-            className={`inline-flex items-center px-6 py-3 ${buttonColor} rounded-md hover:opacity-90 transition-opacity`}
+            className={`inline-flex items-center px-8 py-4 ${buttonColor} rounded-md hover:opacity-90 transition-opacity`}
           >
             {buttonText}
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <ArrowRight className="ml-2 h-4 w-4 font-bold text-xl" />
           </a>
         </div>
       </div>

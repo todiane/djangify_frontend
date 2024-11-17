@@ -9,8 +9,7 @@ const HomeHero = () => {
           Welcome to <span className="text-[#0C8C9D]">Djangify</span>
         </h1>
         <p className="text-lg md:text-xl text-[#737373] max-w-2xl mx-auto mb-8">
-          Exploring web development through Django, React, and modern technologies.
-          Discover projects and insights about development practices.
+          Delving into web development with Django, Flask, AI, APIs, and Next.js to create practical and effective solutions.
         </p>
         <div className="flex gap-4 justify-center">
           <a

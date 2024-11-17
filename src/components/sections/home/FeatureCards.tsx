@@ -31,26 +31,26 @@ const FeatureCards = () => {
   const features: Feature[] = [
     {
       icon: <MessageSquare className="w-8 h-8 mb-2 text-[#0C8C9D]" />,
-      title: "Shared ownership.",
-      description: "Whether I work independently or integrate with your team, everyone comes along the process.",
+      title: "Creating practical solutions.",
+      description: "I focus on building products for growing businesses that are tailored to your business needs. This includes products like eCommerce, LMS (learning management sites), SaaS and AI Assistants. ",
       size: "large"
     },
     {
       icon: <Rocket className="w-8 h-8 mb-2 text-[#0C8C9D]" />,
-      title: "I work fast, like really fast.",
-      description: "Stand out from competitors with a top-notch frontend and an exceptional user experience.",
+      title: "AI Tools",
+      description: "Creating AI assistants to streamline your daily tasks and AI tools that simplify complex processes.",
       size: "small"
     },
     {
       icon: <Layers className="w-8 h-8 mb-2 text-[#0C8C9D]" />,
-      title: "I work in systems.",
-      description: "Whether it's a small feature or an entire design system, I create reusable components for the team.",
+      title: "Scalable Web Solutions.",
+      description: "Proficient in Django-based backend systems for scalable applications and leveraging Next.js for dynamic and responsive frontend designs.",
       size: "small"
     },
     {
       icon: <Eye className="w-8 h-8 mb-2 text-[#0C8C9D]" />,
-      title: "Show and tell.",
-      description: "I frequently share work in progress, usually in the form of screen recordings with a voice over.",
+      title: "I build And I Sell.",
+      description: "My focus is on creating ready-to-use digital solutions that cater to various business needs. From ecommerce platforms to AI-driven tools, each product is crafted with precision and is available for purchase. Explore my portfolio to find the right fit for your business, and acquire a solution that's ready to deploy.",
       size: "large"
     }
   ];
