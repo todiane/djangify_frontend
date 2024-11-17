@@ -9,7 +9,7 @@ export default function HomePage() {
       <div className="w-full">
         <HomeHero />
         <div className="container mx-auto px-4">
-          <section className="py-12">
+          <section className="pt-12 pb-4">
             <div className="container">
               <h1 className="text-4xl font-bold mb-6">
                 Building Practical Solutions with Django and Next.js

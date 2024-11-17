@@ -56,7 +56,7 @@ const FeatureCards = () => {
   ];
 
   return (
-    <div className="space-y-6 py-16">
+    <div className="space-y-6 pt-2 pb-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <FeatureCard
           feature={features[0]}
