@@ -2,7 +2,7 @@
 import type { ImageProps } from 'next/image';
 import { imageConfig, fallbackImages } from '@/config/images';
 
-export type ImageType = 'blog' | 'portfolio' | 'gallery';
+export type ImageType = 'portfolio' | 'gallery';
 
 interface ImageLoadParams {
   src: string | null | undefined;
@@ -10,7 +10,7 @@ interface ImageLoadParams {
   alt: string;
 }
 
-export const getImageUrl = (imageUrl: string | null | undefined, type: ImageType = 'blog'): string => {
+export const getImageUrl = (imageUrl: string | null | undefined, type: ImageType = 'portfolio'): string => {
   if (!imageUrl) {
     return fallbackImages[type];
   }
@@ -31,19 +31,9 @@ export const getImageUrl = (imageUrl: string | null | undefined, type: ImageType
 };
 
 export const getImageProps = (type: ImageType): Partial<ImageProps> => {
-  let config = imageConfig.blog;
-
-  switch (type) {
-    case 'blog':
-      config = imageConfig.blog;
-      break;
-    case 'portfolio':
-      config = imageConfig.portfolio.featured;
-      break;
-    case 'gallery':
-      config = imageConfig.portfolio.gallery;
-      break;
-  }
+  const config = type === 'portfolio'
+    ? imageConfig.portfolio.featured
+    : imageConfig.portfolio.gallery;
 
   return {
     width: config.width,
