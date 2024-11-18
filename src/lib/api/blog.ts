@@ -8,7 +8,7 @@ export const blogApi = {
    * Get paginated blog posts with optional filtering
    */
   getBlogPosts: async (params?: BlogFilter) => {
-    const response = await api.get<PaginatedResponse<Post>>('blog/posts/', {
+    const response = await api.get<PaginatedResponse<Post>>('api/v1/blog/posts/', {
       params: {
         page: params?.page || 1,
         page_size: params?.page_size || 9,
