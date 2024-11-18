@@ -3,18 +3,14 @@ import axios from 'axios';
 import { auth } from '../auth';
 import { authApi } from './auth';
 
-// Helper to get the base URL based on environment
 const getBaseUrl = () => {
   if (typeof window === 'undefined') {
-    // Server-side
-    return process.env.NEXT_PUBLIC_DJANGO_URL || 'http://localhost:8000';
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
   }
-  // Client-side
   if (process.env.NODE_ENV === 'development') {
     return 'http://localhost:8000';
   }
-  // Production - use the same domain
-  return '';
+  return process.env.NEXT_PUBLIC_API_URL || '';
 };
 
 export const api = axios.create({
@@ -23,10 +19,9 @@ export const api = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 10000,
-  withCredentials: true, // Important for handling cookies if needed
+  withCredentials: true,
 });
 
-// Request interceptor
 api.interceptors.request.use(async (config) => {
   const token = auth.getAccessToken();
   if (token) {
@@ -35,13 +30,11 @@ api.interceptors.request.use(async (config) => {
   return config;
 });
 
-// Response interceptor
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // Handle token refresh
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const refreshToken = auth.getRefreshToken();
@@ -60,7 +53,6 @@ api.interceptors.response.use(
       }
     }
 
-    // Log errors appropriately
     if (error.response) {
       console.error(`API Error ${error.response.status}:`, error.response.data);
     } else if (error.request) {
