@@ -23,7 +23,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'djangify-backend.up.railway.app',
+        hostname: 'djangifybackend.up.railway.app',
         pathname: '/media/**',
       },
       {

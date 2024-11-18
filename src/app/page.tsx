@@ -1,7 +1,6 @@
 import PageTransition from '@/components/transitions/PageTransition';
 import HomeHero from '@/components/sections/home/HomeHero';
 import FeatureCards from '@/components/sections/home/FeatureCards';
-import LatestPosts from '@/components/sections/home/LatestPosts';
 
 export default function HomePage() {
   return (
@@ -20,7 +19,6 @@ export default function HomePage() {
             </div>
           </section>
           <FeatureCards />
-          <LatestPosts />
         </div>
       </div>
     </PageTransition>

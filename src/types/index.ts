@@ -10,16 +10,6 @@ export interface Project {
   created_at: string;
 }
 
-export interface BlogPost {
-  id: number;
-  title: string;
-  content: string;
-  slug: string;
-  image?: string;
-  created_at: string;
-  updated_at: string;
-}
-
 export interface ApiResponse<T> {
   count: number;
   next: string | null;

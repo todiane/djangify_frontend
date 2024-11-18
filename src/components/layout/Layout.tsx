@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Home, Briefcase, BookOpen, User, Mail } from 'lucide-react';
+import { Menu, X, Home, Briefcase, BookOpen, Mail } from 'lucide-react';
 import ThemeToggle from '../common/theme-toggle';
 import SearchBar from '../common/SearchBar';
 import { cn } from '@/lib/utils';
@@ -25,8 +25,7 @@ interface NavigationItem {
 const navigationItems: NavigationItem[] = [
   { label: 'Home', icon: Home, href: '/' as Route },
   { label: 'Portfolio', icon: Briefcase, href: '/portfolio' as Route },
-  { label: 'Blog', icon: BookOpen, href: '/blog' as Route },
-  { label: 'About', icon: User, href: '/about' as Route },
+  { label: 'About', icon: BookOpen, href: '/about' as Route },
   { label: 'Contact', icon: Mail, href: '/contact' as Route }
 ];
 

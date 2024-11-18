@@ -1,6 +1,5 @@
 // src/lib/metadata.ts
 import { Metadata } from 'next';
-import { Post } from '@/types/blog';
 import { Project } from '@/types/portfolio';
 
 interface SeoProps {
@@ -48,34 +47,6 @@ export function generateMetadata({
     },
     alternates: {
       canonical: fullUrl,
-    },
-  };
-}
-
-export function generateBlogJsonLd(post: Post) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.excerpt,
-    image: post.featured_image,
-    datePublished: post.published_date,
-    dateModified: post.updated_at,
-    author: {
-      '@type': 'Person',
-      name: post.author?.name || 'Djangify Team',
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Djangify',
-      logo: {
-        '@type': 'ImageObject',
-        url: `${process.env.NEXT_PUBLIC_APP_URL}/logo.png`,
-      },
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `${process.env.NEXT_PUBLIC_APP_URL}/blog/${post.slug}`,
     },
   };
 }

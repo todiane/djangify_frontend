@@ -41,6 +41,4 @@ export const portfolioApi = {
   getProject: (slug: string) =>
     api.get<Project>(`portfolio/projects/${slug}/`),
 
-  getBlogPosts: () =>
-    api.get('blog/posts/'),
 };
