@@ -1,6 +1,8 @@
 import PageTransition from '@/components/transitions/PageTransition';
 import HomeHero from '@/components/sections/home/HomeHero';
 import FeatureCards from '@/components/sections/home/FeatureCards';
+import { AboutSection } from "@/components/sections/home/AboutSection";
+import { ContactSection } from "@/components/sections/home/ContactSection";
 
 export default function HomePage() {
   return (
@@ -19,6 +21,8 @@ export default function HomePage() {
             </div>
           </section>
           <FeatureCards />
+          <AboutSection />
+          <ContactSection />
         </div>
       </div>
     </PageTransition>

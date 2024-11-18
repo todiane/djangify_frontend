@@ -30,7 +30,7 @@ const FeatureCard = ({
 const FeatureCards = () => {
   const features: Feature[] = [
     {
-      icon: <MessageSquare className="w-8 h-8 mb-2 text-[#0C8C9D]" />,
+      icon: <MessageSquare className="w-8 h-8 mb-8 text-[#0C8C9D]" />,
       title: "Creating practical solutions.",
       description: "I focus on building products for growing businesses that are tailored to your business needs. This includes products like eCommerce, LMS (learning management sites), SaaS and AI Assistants. ",
       size: "large"

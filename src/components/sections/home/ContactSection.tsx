@@ -1,16 +1,11 @@
-// app/contact/page.tsx
+// src/components/sections/home/ContactSection.tsx
 import { ContactForm } from "@/components/contact/ContactForm";
 import { Mail, Phone, MapPin } from "lucide-react";
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Contact | Djangify',
-  description: 'Get in touch with me for collaboration, questions, or project inquiries.',
-};
 
-export default function ContactPage() {
+export const ContactSection = () => {
   return (
-    <div className="container mx-auto px-4 py-12">
+    <section id="contact" className="py-12 bg-slate-50">
       <div className="max-w-5xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="space-y-6">
@@ -50,7 +45,6 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-    </div>
-
+    </section>
   );
-}
+};

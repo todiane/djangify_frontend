@@ -20,7 +20,7 @@ const HomeHero = () => {
             <ArrowRight className="ml-2 h-4 w-4" />
           </a>
           <a
-            href="/contact"
+            href="/#contact"
             className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
           >
             Get In Touch
