@@ -78,12 +78,13 @@ async function ProjectContent({ slug }: { slug: string }) {
         <ProjectView project={project} />
       </>
     );
-  } catch (error) {
+  } catch (error: any) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="flex items-center gap-2 p-4 text-red-800 bg-red-50 rounded-md">
           <AlertCircle className="h-4 w-4" />
           <p>Failed to load project details. Please try again later.</p>
+          <p>{error.message}</p>
         </div>
       </div>
     );

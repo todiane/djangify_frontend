@@ -1,4 +1,3 @@
-// src/components/layout/Layout.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -75,6 +74,12 @@ export default function Layout({ children }: LayoutProps) {
     if (href.startsWith('/#')) {
       e.preventDefault();
       const elementId = href.replace('/#', '');
+
+      if (pathname !== '/') {
+        window.location.href = href;
+        return;
+      }
+
       const element = document.getElementById(elementId);
       if (element) {
         const headerOffset = 80;
