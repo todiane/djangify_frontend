@@ -46,12 +46,12 @@ async function PortfolioContent() {
     }
 
     return <PortfolioGrid initialItems={response.data.results} technologies={[]} />;
-  } catch (error: unknown) {
+  } catch (error) {
     return (
       <div className="flex items-center gap-2 p-4 text-red-800 bg-red-50 rounded-md mt-6">
         <AlertCircle className="h-4 w-4" />
         <p>Failed to load portfolio projects. Please try again later.</p>
-        <p>{error instanceof Error ? error.message : 'Unknown error'}</p>
+
       </div>
     );
   }
