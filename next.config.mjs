@@ -1,4 +1,3 @@
-// Remove this if @next/bundle-analyzer is not in your package.json
 import bundleAnalyzer from '@next/bundle-analyzer';
 
 const withBundleAnalyzer = bundleAnalyzer({
@@ -7,12 +6,21 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Build output configuration for Docker
   output: 'standalone',
+
+  // Core configurations
   reactStrictMode: true,
   transpilePackages: ["lucide-react"],
   typescript: {
     ignoreBuildErrors: true,
   },
+  poweredByHeader: false,
+  compress: true,
+  distDir: '.next',
+  productionBrowserSourceMaps: false,
+
+  // Image configuration
   images: {
     remotePatterns: [
       {
@@ -36,15 +44,20 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/webp'],
   },
+
+  // Experimental features
   experimental: {
     typedRoutes: true,
     serverComponentsExternalPackages: [],
     scrollRestoration: true,
   },
-  distDir: '.next',
+
+  // Build ID generation
   generateBuildId: async () => {
-    return 'build-' + Date.now()
+    return `build-${Date.now()}`;
   },
+
+  // API rewrites configuration
   async rewrites() {
     const djangoUrl = process.env.NEXT_PUBLIC_DJANGO_URL || 'http://localhost:8000';
     return [
@@ -52,11 +65,10 @@ const nextConfig = {
         source: '/api/:path*',
         destination: `${djangoUrl}/api/:path*`
       }
-    ]
+    ];
   },
-  compress: true,
-  poweredByHeader: false,
-  productionBrowserSourceMaps: false,
+
+  // Security headers
   async headers() {
     return [
       {
@@ -84,7 +96,7 @@ const nextConfig = {
           }
         ]
       }
-    ]
+    ];
   }
 };
 
