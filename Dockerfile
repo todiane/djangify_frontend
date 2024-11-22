@@ -20,8 +20,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Set environment variables for production build
-ENV NEXT_TELEMETRY_DISABLED 1
-ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
 
 # Build application
 RUN npm run build
@@ -33,8 +33,8 @@ RUN ls -la .next/standalone/
 FROM node:20.18.0-slim AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Create non-root user
 RUN addgroup --system --gid 1001 nodejs
@@ -54,7 +54,7 @@ USER nextjs
 # Expose port
 EXPOSE 3000
 
-ENV PORT 3000
+ENV PORT=3000
 
 # Start the application
 CMD ["node", "server.js"]

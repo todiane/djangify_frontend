@@ -1,9 +1,12 @@
-// src/lib/api/base.ts
-import axios from 'axios';
+import axios, { AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
 import { auth } from '../auth';
 import { authApi } from './auth';
 
-const getBaseUrl = () => {
+interface ExtendedAxiosRequestConfig extends AxiosRequestConfig {
+  _retry?: boolean;
+}
+
+const getBaseUrl = (): string => {
   if (typeof window === 'undefined') {
     return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
   }
@@ -11,6 +14,32 @@ const getBaseUrl = () => {
     return 'http://localhost:8000';
   }
   return process.env.NEXT_PUBLIC_API_URL || '';
+};
+
+const axiosRetry = async (error: AxiosError): Promise<AxiosResponse> => {
+  const maxRetries = 3;
+  let retryCount = 0;
+  const config = error.config as ExtendedAxiosRequestConfig;
+
+  const retryCondition = (error: AxiosError) => {
+    return error.response?.status === 502 || error.response?.status === 503;
+  };
+
+  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+  while (retryCount < maxRetries) {
+    try {
+      retryCount++;
+      await sleep(Math.min(1000 * Math.pow(2, retryCount), 10000));
+      return await axios(config);
+    } catch (err) {
+      const axiosErr = err as AxiosError;
+      if (retryCount === maxRetries || !retryCondition(axiosErr)) {
+        throw err;
+      }
+    }
+  }
+  throw error;
 };
 
 export const api = axios.create({
@@ -25,25 +54,47 @@ export const api = axios.create({
 api.interceptors.request.use(async (config) => {
   const token = auth.getAccessToken();
   if (token) {
+    config.headers = config.headers || {};
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
 api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+  (response: AxiosResponse) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as ExtendedAxiosRequestConfig;
 
+    if (!originalRequest) {
+      return Promise.reject(error);
+    }
+
+    // Handle cold start errors (502/503)
+    if (
+      (error.response?.status === 502 || error.response?.status === 503) &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+      try {
+        return await axiosRetry(error);
+      } catch (retryError) {
+        return Promise.reject(retryError);
+      }
+    }
+
+    // Handle authentication errors
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const refreshToken = auth.getRefreshToken();
 
       if (refreshToken) {
         try {
-          const { access } = await authApi.refreshToken(refreshToken as string);
-          auth.setTokens(access, refreshToken as string);
-          originalRequest.headers.Authorization = `Bearer ${access}`;
+          const { access } = await authApi.refreshToken(refreshToken);
+          auth.setTokens(access, refreshToken);
+          originalRequest.headers = {
+            ...originalRequest.headers,
+            Authorization: `Bearer ${access}`,
+          };
           return api(originalRequest);
         } catch (refreshError) {
           auth.clearTokens();
@@ -53,13 +104,6 @@ api.interceptors.response.use(
       }
     }
 
-    if (error.response) {
-      console.error(`API Error ${error.response.status}:`, error.response.data);
-    } else if (error.request) {
-      console.error('Network Error:', error.message);
-    } else {
-      console.error('Error:', error.message);
-    }
     return Promise.reject(error);
   }
 );
