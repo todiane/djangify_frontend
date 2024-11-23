@@ -1,6 +1,4 @@
 import axios, { AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
-import { auth } from '../auth';
-import { authApi } from './auth';
 
 interface ExtendedAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
@@ -51,15 +49,6 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-api.interceptors.request.use(async (config) => {
-  const token = auth.getAccessToken();
-  if (token) {
-    config.headers = config.headers || {};
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError) => {
@@ -69,7 +58,6 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Handle cold start errors (502/503)
     if (
       (error.response?.status === 502 || error.response?.status === 503) &&
       !originalRequest._retry
@@ -79,28 +67,6 @@ api.interceptors.response.use(
         return await axiosRetry(error);
       } catch (retryError) {
         return Promise.reject(retryError);
-      }
-    }
-
-    // Handle authentication errors
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      const refreshToken = auth.getRefreshToken();
-
-      if (refreshToken) {
-        try {
-          const { access } = await authApi.refreshToken(refreshToken);
-          auth.setTokens(access, refreshToken);
-          originalRequest.headers = {
-            ...originalRequest.headers,
-            Authorization: `Bearer ${access}`,
-          };
-          return api(originalRequest);
-        } catch (refreshError) {
-          auth.clearTokens();
-          window.location.href = '/login';
-          return Promise.reject(refreshError);
-        }
       }
     }
 

@@ -1,14 +1,30 @@
-version: '3.8'
-
 services:
   frontend:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
     ports:
-      - "3000:3000"
+      - "3000:3000" # Keep 3000 for local development
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
+      - PORT=3000 # Use 3000 locally
+      - HOST=0.0.0.0
       - NEXT_PUBLIC_API_URL=https://djangifybackend.up.railway.app
       - NEXT_PUBLIC_DJANGO_URL=https://djangifybackend.up.railway.app
       - NEXT_PUBLIC_SITE_URL=http://localhost:3000
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "http://localhost:3000" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# Optional development configuration
+networks:
+  default:
+    name: djangify_network
