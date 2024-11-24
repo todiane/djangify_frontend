@@ -13,7 +13,12 @@ export const revalidate = 3600; // Revalidate every hour
 async function getPortfolioData() {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-    const apiUrl = baseUrl.startsWith('http') ? baseUrl : `https://${baseUrl}`;
+    // Ensure baseUrl has protocol
+    const apiUrl = baseUrl.startsWith('http')
+      ? baseUrl
+      : `https://${baseUrl}`;
+
+    console.log('Fetching from:', `${apiUrl}/api/v1/portfolio/projects/`);
 
     const res = await fetch(`${apiUrl}/api/v1/portfolio/projects/`, {
       method: 'GET',
@@ -21,15 +26,19 @@ async function getPortfolioData() {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      next: { revalidate: 3600 }
+      cache: 'no-store' // Disable caching temporarily for debugging
     });
 
     if (!res.ok) {
+      console.error('Response not ok:', res.status, res.statusText);
       throw new Error(`Failed to fetch data: ${res.status}`);
     }
 
-    return res.json();
+    const data = await res.json();
+    console.log('Received data:', data);
+    return data;
   } catch (error) {
+    console.error('Error fetching portfolio data:', error);
     throw error;
   }
 }
