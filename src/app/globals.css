@@ -9,6 +9,13 @@
     color: #403F3F;
   }
 
+  @font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/Inter/poppins-v21-latin-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;

@@ -1,9 +1,3 @@
-import bundleAnalyzer from '@next/bundle-analyzer';
-
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Build output configuration for Docker
@@ -43,6 +37,7 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/webp'],
+    unoptimized: process.env.NODE_ENV === 'production',
   },
 
   // Experimental features
@@ -52,19 +47,17 @@ const nextConfig = {
     scrollRestoration: true,
   },
 
-  // Build ID generation
-  generateBuildId: async () => {
-    return `build-${Date.now()}`;
-  },
-
-  // API rewrites configuration
+  // Font configuration (serve fonts from the public folder)
   async rewrites() {
-    const djangoUrl = process.env.NEXT_PUBLIC_DJANGO_URL || 'http://localhost:8000';
     return [
       {
+        source: '/fonts/:path*',
+        destination: '/public/fonts/:path*', // Adjust path as needed
+      },
+      {
         source: '/api/:path*',
-        destination: `${djangoUrl}/api/:path*`
-      }
+        destination: `${process.env.NEXT_PUBLIC_DJANGO_URL || 'http://localhost:8000'}/api/:path*`,
+      },
     ];
   },
 
@@ -76,28 +69,28 @@ const nextConfig = {
         headers: [
           {
             key: 'X-DNS-Prefetch-Control',
-            value: 'on'
+            value: 'on',
           },
           {
             key: 'X-XSS-Protection',
-            value: '1; mode=block'
+            value: '1; mode=block',
           },
           {
             key: 'X-Frame-Options',
-            value: 'SAMEORIGIN'
+            value: 'SAMEORIGIN',
           },
           {
             key: 'X-Content-Type-Options',
-            value: 'nosniff'
+            value: 'nosniff',
           },
           {
             key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin'
-          }
-        ]
-      }
+            value: 'origin-when-cross-origin',
+          },
+        ],
+      },
     ];
-  }
+  },
 };
 
-export default withBundleAnalyzer(nextConfig);
+export default nextConfig;

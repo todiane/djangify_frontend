@@ -207,13 +207,13 @@ export default function Layout({ children }: LayoutProps) {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center py-8">
             <div className="flex items-center">
-              <Image
+              {/* <Image
                 src="/djangify-logo.svg"
                 alt="Djangify Logo"
                 width={100}
                 height={25}
                 className="hidden md:block"
-              />
+              /> */}
               <span className="md:hidden text-xl font-bold text-[#0C8C9D]">Djangify</span>
             </div>
             <div className="mt-4 md:mt-0">

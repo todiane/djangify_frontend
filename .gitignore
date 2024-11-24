@@ -58,6 +58,7 @@ static/
 # Logs
 logs
 *.log
+venv/
 
 # Runtime data
 pids

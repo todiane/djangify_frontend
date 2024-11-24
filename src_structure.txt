@@ -1,0 +1,86 @@
+src
+├── app
+│   ├── error.tsx
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── loading.tsx
+│   ├── not-found.tsx
+│   ├── page.tsx
+│   └── portfolio
+│       ├── [slug]
+│       │   ├── error.tsx
+│       │   └── page.tsx
+│       └── page.tsx
+├── components
+│   ├── LoadingPage.tsx
+│   ├── common
+│   │   ├── OptimizedImage.tsx
+│   │   ├── SearchBar.tsx
+│   │   └── theme-toggle.tsx
+│   ├── contact
+│   │   └── ContactForm.tsx
+│   ├── error
+│   │   ├── ErrorBoundary.tsx
+│   │   ├── index.ts
+│   │   └── index.tsx
+│   ├── forms
+│   │   └── NewsletterForm.tsx
+│   ├── layout
+│   │   └── Layout.tsx
+│   ├── loading
+│   │   ├── GalleryLoading.tsx
+│   │   ├── LoadingPortfolio.tsx
+│   │   └── LoadingState.tsx
+│   ├── portfolio
+│   │   ├── FeaturedPortfolio.tsx
+│   │   ├── LoadingPortfolio.tsx
+│   │   ├── PortfolioCard.tsx
+│   │   ├── PortfolioFilter.tsx
+│   │   ├── PortfolioGallery.tsx
+│   │   ├── PortfolioGrid.tsx
+│   │   ├── PortfolioLightbox.tsx
+│   │   ├── PortfolioList.tsx
+│   │   ├── ProjectView.tsx
+│   │   └── index.ts
+│   ├── sections
+│   │   ├── common
+│   │   │   └── CTASection.tsx
+│   │   └── home
+│   │       ├── AboutSection.tsx
+│   │       ├── ContactSection.tsx
+│   │       ├── FeatureCards.tsx
+│   │       └── HomeHero.tsx
+│   └── transitions
+│       └── PageTransition.tsx
+├── config
+│   └── images.ts
+├── contexts
+│   └── AuthContext.tsx
+├── hooks
+│   └── useAuth.ts
+├── lib
+│   ├── api
+│   │   ├── auth.ts
+│   │   ├── base.ts
+│   │   └── portfolio.ts
+│   ├── api.ts
+│   ├── auth.ts
+│   ├── metadata.ts
+│   ├── utils
+│   │   └── image.ts
+│   └── utils.ts
+├── providers
+│   ├── providers.tsx
+│   └── query-provider.tsx
+└── types
+    ├── api.ts
+    ├── common.ts
+    ├── env.d.ts
+    ├── image.ts
+    ├── index.ts
+    ├── next-auth.d.ts
+    ├── portfolio.ts
+    └── theme.ts
+
+23 directories, 60 files

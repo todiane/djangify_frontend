@@ -1,6 +1,5 @@
 // tailwind.config.ts
 import type { Config } from "tailwindcss";
-import typography from "@tailwindcss/typography";
 import animate from "tailwindcss-animate";
 
 const config: Config = {
@@ -20,6 +19,9 @@ const config: Config = {
       }
     },
     extend: {
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
+      },
       colors: {
         primary: '#3b82f6',
         secondary: '#64748b',
@@ -65,7 +67,7 @@ const config: Config = {
       }
     }
   },
-  plugins: [typography, animate],
+  plugins: [require('@tailwindcss/typography'), require('tailwindcss-animate')],
 } satisfies Config;
 
 export default config;
