@@ -18,17 +18,20 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        // Local development environment
         protocol: 'http',
         hostname: 'localhost',
         port: '8000',
         pathname: '/media/**',
       },
       {
+        // Production environment
         protocol: 'https',
         hostname: 'djangifybackend.up.railway.app',
         pathname: '/media/**',
       },
       {
+        // Production frontend
         protocol: 'https',
         hostname: 'djangify.up.railway.app',
         pathname: '/media/**',

@@ -1,9 +1,8 @@
-// src/app/portfolio/page.tsx
 import { Suspense } from 'react';
 import { PortfolioGrid } from "@/components/portfolio/PortfolioGrid";
 import { LoadingPortfolio } from "@/components/portfolio/LoadingPortfolio";
-import { portfolioApi } from '@/lib/api/portfolio';
 import { AlertCircle } from "lucide-react";
+import { headers } from 'next/headers';
 
 export const metadata = {
   title: 'Portfolio | Djangify',
@@ -11,6 +10,29 @@ export const metadata = {
 };
 
 export const revalidate = 3600; // Revalidate every hour
+
+async function getPortfolioData() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    const res = await fetch(`${baseUrl}/api/v1/portfolio/projects/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any necessary headers
+        ...headers()
+      },
+      next: { revalidate: 3600 }
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data: ${res.status}`);
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching portfolio data:', error);
+    throw error;
+  }
+}
 
 export default function PortfolioPage() {
   return (
@@ -31,13 +53,11 @@ export default function PortfolioPage() {
   );
 }
 
-// src/app/portfolio/page.tsx
 async function PortfolioContent() {
   try {
-    // Updated method name
-    const response = await portfolioApi.getProjects();
+    const data = await getPortfolioData();
 
-    if (!response.data.results.length) {
+    if (!data?.results || data.results.length === 0) {
       return (
         <div className="text-center py-12">
           <p className="text-gray-600">No projects available at the moment.</p>
@@ -45,13 +65,12 @@ async function PortfolioContent() {
       );
     }
 
-    return <PortfolioGrid initialItems={response.data.results} technologies={[]} />;
+    return <PortfolioGrid initialItems={data.results} technologies={[]} />;
   } catch (error) {
     return (
-      <div className="flex items-center gap-2 p-4 text-red-800 bg-red-50 rounded-md mt-6">
-        <AlertCircle className="h-4 w-4" />
-        <p>Failed to load portfolio projects. Please try again later.</p>
-
+      <div className="flex items-center justify-center gap-2 p-4 text-red-800 bg-red-50 rounded-md mt-6">
+        <AlertCircle className="h-5 w-5" />
+        <p className="text-sm font-medium">Failed to load portfolio projects. Please try again later.</p>
       </div>
     );
   }
