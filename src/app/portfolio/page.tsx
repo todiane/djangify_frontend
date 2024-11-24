@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 import { PortfolioGrid } from "@/components/portfolio/PortfolioGrid";
 import { LoadingPortfolio } from "@/components/portfolio/LoadingPortfolio";
 import { AlertCircle } from "lucide-react";
-import { headers } from 'next/headers';
 
 export const metadata = {
   title: 'Portfolio | Djangify',
@@ -14,10 +13,14 @@ export const revalidate = 3600; // Revalidate every hour
 async function getPortfolioData() {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-    // Add logging to debug
-    console.log('Fetching from:', `${baseUrl}/api/v1/portfolio/projects/`);
+    // Ensure baseUrl has protocol
+    const apiUrl = baseUrl.startsWith('http')
+      ? baseUrl
+      : `https://${baseUrl}`;
 
-    const res = await fetch(`${baseUrl}/api/v1/portfolio/projects/`, {
+    console.log('Fetching from:', `${apiUrl}/api/v1/portfolio/projects/`);
+
+    const res = await fetch(`${apiUrl}/api/v1/portfolio/projects/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +35,7 @@ async function getPortfolioData() {
     }
 
     const data = await res.json();
-    console.log('Received data:', data); // Add logging
+    console.log('Received data:', data);
     return data;
   } catch (error) {
     console.error('Error fetching portfolio data:', error);
