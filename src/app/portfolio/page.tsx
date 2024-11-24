@@ -13,12 +13,7 @@ export const revalidate = 3600; // Revalidate every hour
 async function getPortfolioData() {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-    // Ensure baseUrl has protocol
-    const apiUrl = baseUrl.startsWith('http')
-      ? baseUrl
-      : `https://${baseUrl}`;
-
-    console.log('Fetching from:', `${apiUrl}/api/v1/portfolio/projects/`);
+    const apiUrl = baseUrl.startsWith('http') ? baseUrl : `https://${baseUrl}`;
 
     const res = await fetch(`${apiUrl}/api/v1/portfolio/projects/`, {
       method: 'GET',
@@ -26,19 +21,15 @@ async function getPortfolioData() {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      cache: 'no-store' // Disable caching temporarily for debugging
+      next: { revalidate: 3600 }
     });
 
     if (!res.ok) {
-      console.error('Response not ok:', res.status, res.statusText);
       throw new Error(`Failed to fetch data: ${res.status}`);
     }
 
-    const data = await res.json();
-    console.log('Received data:', data);
-    return data;
+    return res.json();
   } catch (error) {
-    console.error('Error fetching portfolio data:', error);
     throw error;
   }
 }
@@ -65,17 +56,8 @@ export default function PortfolioPage() {
 async function PortfolioContent() {
   try {
     const data = await getPortfolioData();
-    console.log('PortfolioContent received:', data);
 
-    // Check the exact structure
-    if (!data || (!Array.isArray(data) && !Array.isArray(data?.results))) {
-      console.error('Unexpected data structure:', data);
-      throw new Error('Invalid data structure received');
-    }
-
-    const projects = Array.isArray(data) ? data : data.results;
-
-    if (!projects || projects.length === 0) {
+    if (!data?.results || data.results.length === 0) {
       return (
         <div className="text-center py-12">
           <p className="text-gray-600">No projects available at the moment.</p>
@@ -83,9 +65,8 @@ async function PortfolioContent() {
       );
     }
 
-    return <PortfolioGrid initialItems={projects} technologies={[]} />;
+    return <PortfolioGrid initialItems={data.results} technologies={[]} />;
   } catch (error) {
-    console.error('PortfolioContent error:', error);
     return (
       <div className="flex items-center justify-center gap-2 p-4 text-red-800 bg-red-50 rounded-md mt-6">
         <AlertCircle className="h-5 w-5" />
