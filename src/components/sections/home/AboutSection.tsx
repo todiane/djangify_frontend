@@ -1,5 +1,7 @@
 // src/components/sections/home/AboutSection.tsx
-import Image from 'next/image';
+"use client";
+
+import { CldImage } from 'next-cloudinary';
 
 export const AboutSection = () => {
   return (
@@ -22,12 +24,13 @@ export const AboutSection = () => {
             </p>
           </div>
           <div className="md:w-1/2 flex justify-center">
-            <Image
-              src="/images/dianecorriette-cartoon.png"
-              alt="A description of the image"
+            <CldImage
+              src="dianecorriette-cartoon"  // Remove the .png extension when using with CldImage
+              alt="Diane Corriette"
               width={580}
               height={320}
               className="rounded-lg mb-4"
+              crop="fill"
             />
           </div>
         </div>
