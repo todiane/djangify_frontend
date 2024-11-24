@@ -1,9 +1,11 @@
 // src/components/sections/home/AboutSection.tsx
 "use client";
-
-import { CldImage } from 'next-cloudinary';
+import Image from 'next/image';
+import { useState } from 'react';
 
 export const AboutSection = () => {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <section id="about" className="py-12">
       <div className="w-full mx-auto">
@@ -24,14 +26,22 @@ export const AboutSection = () => {
             </p>
           </div>
           <div className="md:w-1/2 flex justify-center">
-            <CldImage
-              src="dianecorriette-cartoon"  // Remove the .png extension when using with CldImage
-              alt="Diane Corriette"
-              width={580}
-              height={320}
-              className="rounded-lg mb-4"
-              crop="fill"
-            />
+            {!imageError ? (
+              <Image
+                src="/images/dianecorriette-cartoon.png"
+                alt="Diane Corriette - Full Stack Developer"
+                width={580}
+                height={320}
+                className="rounded-lg mb-4"
+                priority
+                onError={() => setImageError(true)}
+                quality={90}
+              />
+            ) : (
+              <div className="rounded-lg mb-4 bg-gray-100 flex items-center justify-center" style={{ width: 580, height: 320 }}>
+                <p className="text-gray-500">Image currently unavailable</p>
+              </div>
+            )}
           </div>
         </div>
 
