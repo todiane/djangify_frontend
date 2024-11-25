@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   try {
     const response = await portfolioApi.getProjectBySlug(params.slug);
     const project = response.data;
-
+    console.log('Fetched Project Data:', project);
 
     return {
       title: `${project.title} | Portfolio`,

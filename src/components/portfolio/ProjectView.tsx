@@ -99,10 +99,9 @@ export function ProjectView({ project }: ProjectViewProps) {
             </div>
           ))}
         </div>
-
         {/* Project Links */}
         <div className="flex gap-4">
-          {project.github_url && project.github_url === 'github' && (
+          {project.github_url && (
             <a
               href={project.github_url}
               target="_blank"
@@ -113,7 +112,7 @@ export function ProjectView({ project }: ProjectViewProps) {
               GitHub Repo
             </a>
           )}
-          {project.external_url && project.external_url === 'marketplace' && (
+          {project.external_url && (
             <a
               href={project.external_url}
               target="_blank"
