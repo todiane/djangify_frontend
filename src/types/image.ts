@@ -1,11 +1,6 @@
 // src/types/image.ts
-export interface ImageDimensions {
-  width: number;
-  height: number;
-  quality: number;
-}
+import type { ImageProps } from 'next/image';
 
-// src/types/image.ts
 export interface ImageDimensions {
   width: number;
   height: number;
@@ -19,3 +14,12 @@ export interface ImageConfig {
   };
 }
 
+export type ImageType = 'portfolio' | 'gallery';
+
+export interface OptimizedImageProps extends Partial<Omit<ImageProps, 'src' | 'alt'>> {
+  src: string | null | undefined;
+  alt: string;
+  type?: ImageType;
+  className?: string;
+  priority?: boolean;
+}

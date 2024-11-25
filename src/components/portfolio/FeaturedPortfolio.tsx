@@ -1,23 +1,26 @@
-// src/components/portfolio/FeaturedPortfolio.tsx
 import Link from 'next/link';
 import { OptimizedImage } from '@/components/common/OptimizedImage';
 import { ArrowRight } from 'lucide-react';
 import type { Project } from '@/types/portfolio';
+import { getImageUrl } from '@/lib/utils/image';
 
-type FeaturedPortfolioProps = Pick<Project, 'title' | 'short_description' | 'slug' | 'featured_image' | 'technologies'>;
+type FeaturedPortfolioProps = Pick<Project, 'title' | 'short_description' | 'slug' | 'featured_image' | 'technologies'> & {
+  display_image?: string | null;
+};
 
 export function FeaturedPortfolio({
   title,
   short_description,
   slug,
   featured_image,
+  display_image,
   technologies,
 }: FeaturedPortfolioProps) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden h-full">
       <div className="relative aspect-video">
         <OptimizedImage
-          src={featured_image}
+          src={getImageUrl(display_image || featured_image, 'portfolio')}
           alt={title}
           type="portfolio"
           className="object-cover"

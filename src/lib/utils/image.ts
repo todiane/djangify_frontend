@@ -1,4 +1,3 @@
-// src/lib/utils/image.ts
 import type { ImageProps } from 'next/image';
 import { imageConfig, fallbackImages } from '@/config/images';
 
@@ -15,19 +14,14 @@ export const getImageUrl = (imageUrl: string | null | undefined, type: ImageType
     return fallbackImages[type];
   }
 
-  const baseUrl = process.env.NODE_ENV === 'development'
-    ? `http://${process.env.NEXT_PUBLIC_BACKEND_HOST || 'localhost'}:${process.env.NEXT_PUBLIC_BACKEND_PORT || '8000'}`
-    : process.env.NEXT_PUBLIC_BACKEND_URL;
-
-  try {
-    new URL(imageUrl);
+  // Full URLs can be returned directly
+  if (imageUrl.startsWith('http')) {
     return imageUrl;
-  } catch {
-    if (imageUrl.startsWith('/media')) {
-      return `${baseUrl}${imageUrl}`;
-    }
-    return `${baseUrl}/media/${imageUrl}`;
   }
+
+  // Default to Cloudinary base URL for paths
+  const CLOUDINARY_BASE_URL = 'https://res.cloudinary.com/dtjypy9b9/image/upload/';
+  return `${CLOUDINARY_BASE_URL}${imageUrl}`;
 };
 
 export const getImageProps = (type: ImageType): Partial<ImageProps> => {
@@ -39,8 +33,8 @@ export const getImageProps = (type: ImageType): Partial<ImageProps> => {
     width: config.width,
     height: config.height,
     sizes: `(max-width: 768px) 100vw, 
-            (max-width: 1200px) 50vw, 
-            ${config.width}px`,
+                (max-width: 1200px) 50vw, 
+                ${config.width}px`,
     quality: config.quality,
     loading: 'lazy' as const,
   };

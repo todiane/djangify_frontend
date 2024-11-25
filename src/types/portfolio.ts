@@ -18,6 +18,7 @@ export interface Project {
   description: string;
   short_description: string;
   featured_image: string | null;
+  display_image?: string | null; // Add this field
   technologies: Technology[];
   project_url?: string;
   github_url?: string;
@@ -25,7 +26,6 @@ export interface Project {
   order: number;
   created_at: string;
   updated_at: string;
-  // Optional fields
   images?: PortfolioImage[];
   meta_title?: string;
   meta_description?: string;
@@ -35,18 +35,22 @@ export interface Project {
   likes_count?: number;
 }
 
+
 // For backwards compatibility and existing components
 export type Portfolio = Project;
 
 // Utility type for portfolio images
 export interface PortfolioImage {
   id: number;
-  image: string;
+  image: string | null;
+  display_image?: string | null; // Add this field
+  image_url?: string | null;
   caption: string;
   order: number;
   created_at: string;
   updated_at: string;
 }
+
 
 // API Response types
 export interface PaginatedResponse<T> {

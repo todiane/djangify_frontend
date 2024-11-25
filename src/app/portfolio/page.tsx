@@ -1,3 +1,7 @@
+// src/app/portfolio/page.tsx - cache store causes error in
+
+export const dynamic = 'force-dynamic';
+
 import { Suspense } from 'react';
 import { PortfolioGrid } from "@/components/portfolio/PortfolioGrid";
 import { LoadingPortfolio } from "@/components/portfolio/LoadingPortfolio";
@@ -11,9 +15,12 @@ export const metadata = {
 async function getPortfolioData() {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    // Ensure baseUrl has protocol
     const apiUrl = baseUrl.startsWith('http')
       ? baseUrl
       : `https://${baseUrl}`;
+
+    console.log('Fetching from:', `${apiUrl}/api/v1/portfolio/projects/`);
 
     const res = await fetch(`${apiUrl}/api/v1/portfolio/projects/`, {
       method: 'GET',
@@ -21,16 +28,16 @@ async function getPortfolioData() {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      next: {
-        revalidate: 3600  // This is the proper way to handle ISR in Next.js 14
-      }
+      cache: 'no-store' // This is key for making it work in production
     });
 
     if (!res.ok) {
+      console.error('Response not ok:', res.status, res.statusText);
       throw new Error(`Failed to fetch data: ${res.status}`);
     }
 
     const data = await res.json();
+    console.log('Received data:', data);
     return data;
   } catch (error) {
     console.error('Error fetching portfolio data:', error);
@@ -60,10 +67,13 @@ export default function PortfolioPage() {
 async function PortfolioContent() {
   try {
     const data = await getPortfolioData();
-
-    // Handle both array and object with results property
+    console.log('PortfolioContent received:', data);
+    // Check the exact structure
+    if (!data || (!Array.isArray(data) && !Array.isArray(data?.results))) {
+      console.error('Unexpected data structure:', data);
+      throw new Error('Invalid data structure received');
+    }
     const projects = Array.isArray(data) ? data : data.results;
-
     if (!projects || projects.length === 0) {
       return (
         <div className="text-center py-12">
@@ -71,9 +81,9 @@ async function PortfolioContent() {
         </div>
       );
     }
-
     return <PortfolioGrid initialItems={projects} technologies={[]} />;
   } catch (error) {
+    console.error('PortfolioContent error:', error);
     return (
       <div className="flex items-center justify-center gap-2 p-4 text-red-800 bg-red-50 rounded-md mt-6">
         <AlertCircle className="h-5 w-5" />

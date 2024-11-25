@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Github, ExternalLink } from 'lucide-react';
 import type { Project, Technology } from '@/types/portfolio';
+import { getImageUrl } from '@/lib/utils/image';
 
 interface PortfolioGridProps {
   initialItems: Project[];
@@ -36,8 +37,8 @@ export function PortfolioGrid({ initialItems, technologies }: PortfolioGridProps
           <button
             onClick={() => setSelectedTech(null)}
             className={`px-4 py-2 rounded-full transition-colors ${selectedTech === null
-                ? 'bg-[#0C8C9D] text-white'
-                : 'bg-white border border-gray-300 hover:bg-gray-50'
+              ? 'bg-[#0C8C9D] text-white'
+              : 'bg-white border border-gray-300 hover:bg-gray-50'
               }`}
           >
             All Projects
@@ -47,8 +48,8 @@ export function PortfolioGrid({ initialItems, technologies }: PortfolioGridProps
               key={tech.slug}
               onClick={() => setSelectedTech(tech.slug)}
               className={`px-4 py-2 rounded-full transition-colors ${selectedTech === tech.slug
-                  ? 'bg-[#0C8C9D] text-white'
-                  : 'bg-white border border-gray-300 hover:bg-gray-50'
+                ? 'bg-[#0C8C9D] text-white'
+                : 'bg-white border border-gray-300 hover:bg-gray-50'
                 }`}
             >
               {tech.name}
@@ -65,7 +66,7 @@ export function PortfolioGrid({ initialItems, technologies }: PortfolioGridProps
           >
             <div className="aspect-video relative">
               <Image
-                src={item.featured_image || '/images/fallback-portfolio.svg'}
+                src={getImageUrl(item.display_image || item.featured_image, 'portfolio')}
                 alt={item.title || 'Project thumbnail'}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"

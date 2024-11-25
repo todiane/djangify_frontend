@@ -1,11 +1,10 @@
-// src/components/portfolio/ProjectView.tsx
 'use client';
 
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
-import { Github, ExternalLink } from "lucide-react";
-import { useOptimizedImage } from '@/lib/utils/image';
-import type { Project } from '@/types/portfolio';
+import { Github, ExternalLink } from 'lucide-react';
+import { getImageUrl } from '@/lib/utils/image';
+import type { Project, PortfolioImage } from '@/types/portfolio';
 
 interface ProjectViewProps {
   project: Project;
@@ -15,24 +14,20 @@ export function ProjectView({ project }: ProjectViewProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   // Pre-process featured image
-  const optimizedFeaturedImage = useOptimizedImage({
-    src: project.featured_image ?? '',
-    type: 'portfolio',
-    alt: project.title
-  });
+  const optimizedFeaturedImage = {
+    src: getImageUrl(project.display_image || project.featured_image, 'portfolio'),
+    alt: project.title,
+  };
 
-  // Pre-process gallery images at the component level
-  const galleryImages = project.images || [];
-  const optimizedGalleryImages = galleryImages.map((img, index) => ({
-    id: img.id,
-    image: img.image,
-    caption: img.caption,
-    type: 'gallery' as const,
-    alt: img.caption || `Gallery image ${index + 1}`,
-    src: img.image,
+  // Pre-process gallery images (ensure galleryImages is defined)
+  const galleryImages: PortfolioImage[] = project.images || [];
+  const validGalleryImages = galleryImages.map((img, index) => ({
+    ...img,
+    src: getImageUrl(img.display_image || img.image || img.image_url, 'gallery'),
+    alt: img.caption || `Gallery image ${index + 1}`, // Add default alt text
   }));
 
-  // Combine all images with their optimized versions
+  // Combine all images
   const allImages = useMemo(() => {
     const featuredImage = {
       id: 0,
@@ -40,16 +35,17 @@ export function ProjectView({ project }: ProjectViewProps) {
       caption: project.title,
       type: 'portfolio' as const,
       alt: project.title,
-      src: optimizedFeaturedImage.src
+      src: optimizedFeaturedImage.src,
     };
 
-    return [featuredImage, ...optimizedGalleryImages];
-  }, [project.featured_image, project.title, optimizedGalleryImages, optimizedFeaturedImage.src]);
+    return [featuredImage, ...validGalleryImages];
+  }, [project.featured_image, project.title, validGalleryImages, optimizedFeaturedImage.src]);
 
   // Memoize selected image data
   const selectedImage = useMemo(() =>
-    selectedImageIndex !== null ? allImages[selectedImageIndex] : null
-    , [selectedImageIndex, allImages]);
+    selectedImageIndex !== null ? allImages[selectedImageIndex] : null,
+    [selectedImageIndex, allImages]
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -132,7 +128,7 @@ export function ProjectView({ project }: ProjectViewProps) {
           >
             <div
               className="relative max-w-4xl w-full"
-              onClick={e => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
             >
               <div className="relative aspect-video">
                 <Image

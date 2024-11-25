@@ -18,24 +18,26 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        // Local development environment
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'djangifybackend.up.railway.app',
+        pathname: '/media/**',
+      },
+      {
         protocol: 'http',
         hostname: 'localhost',
         port: '8000',
         pathname: '/media/**',
       },
       {
-        // Production environment
-        protocol: 'https',
-        hostname: 'djangifybackend.up.railway.app',
-        pathname: '/media/**',
-      },
-      {
-        // Production frontend
         protocol: 'https',
         hostname: 'djangify.up.railway.app',
         pathname: '/media/**',
-      }
+      },
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
