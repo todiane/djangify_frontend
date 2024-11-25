@@ -1,6 +1,6 @@
-// src/components/portfolio/PortfolioGallery.tsx
 import React, { useState } from 'react';
 import { OptimizedImage } from '@/components/common/OptimizedImage';
+import { getImageUrl } from '@/lib/utils/image';
 import { ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react';
 
 interface GalleryImage {
@@ -56,7 +56,7 @@ const ProjectGallery = ({ images = [] }: ProjectGalleryProps) => {
             onClick={() => handleImageClick(index)}
           >
             <OptimizedImage
-              src={image.url}
+              src={getImageUrl(image.url, 'gallery')}
               alt={image.caption || `Project image ${index + 1}`}
               type="gallery"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -78,7 +78,7 @@ const ProjectGallery = ({ images = [] }: ProjectGalleryProps) => {
         <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
           onClick={() => setLightboxOpen(false)}>
           <div className="relative w-full h-full flex items-center justify-center p-4"
-            onClick={e => e.stopPropagation()}>
+            onClick={(e) => e.stopPropagation()}>
             {/* Close button */}
             <button
               className="absolute top-4 right-4 p-2 text-white hover:bg-white/20 rounded-full transition-colors z-50"
@@ -108,7 +108,7 @@ const ProjectGallery = ({ images = [] }: ProjectGalleryProps) => {
             {/* Main image */}
             <div className="relative w-full h-full flex items-center justify-center">
               <OptimizedImage
-                src={selectedImage.url}
+                src={getImageUrl(selectedImage.url, 'gallery')}
                 alt={selectedImage.caption || 'Project image'}
                 type="gallery"
                 className="object-contain"

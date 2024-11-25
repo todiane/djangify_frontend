@@ -1,7 +1,9 @@
 // src/components/portfolio/PortfolioCard.tsx
 import Link from 'next/link';
 import { OptimizedImage } from '@/components/common/OptimizedImage';
-import { ArrowRight, Github, ExternalLink } from 'lucide-react';
+import {
+  ArrowRight, Github, ExternalLink, Globe
+} from 'lucide-react';
 import type { Project } from '@/types/portfolio';
 
 type PortfolioCardProps = Pick<Project,
@@ -11,7 +13,8 @@ type PortfolioCardProps = Pick<Project,
   'featured_image' |
   'technologies' |
   'github_url' |
-  'project_url'
+  'project_url' |
+  'live_url'
 >;
 
 export function PortfolioCard({
@@ -21,7 +24,8 @@ export function PortfolioCard({
   featured_image,
   technologies,
   github_url,
-  project_url
+  project_url,
+  live_url
 }: PortfolioCardProps) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden h-full">
@@ -72,9 +76,20 @@ export function PortfolioCard({
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors flex items-center gap-2"
-              aria-label="View live project"
+              aria-label="View demo project"
             >
               <ExternalLink className="h-4 w-4" />
+            </a>
+          )}
+          {live_url && (
+            <a
+              href={live_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors flex items-center gap-2"
+              aria-label="Visit live site"
+            >
+              <Globe className="h-4 w-4" />
             </a>
           )}
         </div>

@@ -19,6 +19,7 @@ export function PortfolioList({ portfolios }: PortfolioListProps) {
           technologies={portfolio.technologies}
           github_url={portfolio.github_url}
           project_url={portfolio.project_url}
+          live_url={portfolio.live_url}
         />
       ))}
     </div>

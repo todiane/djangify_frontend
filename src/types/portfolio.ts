@@ -22,6 +22,7 @@ export interface Project {
   technologies: Technology[];
   project_url?: string;
   github_url?: string;
+  live_url?: string;
   is_featured: boolean;
   order: number;
   created_at: string;
