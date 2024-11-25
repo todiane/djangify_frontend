@@ -51,6 +51,7 @@ const nextConfig = {
     typedRoutes: true,
     serverComponentsExternalPackages: [],
     scrollRestoration: true,
+    metadataBase: 'https://djangify.up.railway.app',
   },
 
   // Font configuration (serve fonts from the public folder)

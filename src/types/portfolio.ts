@@ -10,7 +10,7 @@ export interface Technology {
   updated_at?: string;
 }
 
-// Base Project type (formerly Portfolio)
+// Base Project type 
 export interface Project {
   id: number;
   title: string;
@@ -18,11 +18,11 @@ export interface Project {
   description: string;
   short_description: string;
   featured_image: string | null;
-  display_image?: string | null; // Add this field
+  display_image?: string | null;
   technologies: Technology[];
-  project_url?: string;
+  external_url?: string;
   github_url?: string;
-  live_url?: string;
+  live_site_url?: string;
   is_featured: boolean;
   order: number;
   created_at: string;
@@ -91,5 +91,6 @@ export interface PortfolioCardData {
   featured_image: string | null;
   technologies: Technology[];
   github_url?: string;
-  project_url?: string;
+  external_url?: string;
+  live_site_url?: string;
 }

@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
-import { Github, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
+import { Github, ExternalLink, ArrowLeft } from 'lucide-react';
 import { getImageUrl } from '@/lib/utils/image';
 import type { Project, PortfolioImage } from '@/types/portfolio';
 
@@ -19,12 +20,12 @@ export function ProjectView({ project }: ProjectViewProps) {
     alt: project.title,
   };
 
-  // Pre-process gallery images (ensure galleryImages is defined)
+  // Pre-process gallery images
   const galleryImages: PortfolioImage[] = project.images || [];
   const validGalleryImages = galleryImages.map((img, index) => ({
     ...img,
     src: getImageUrl(img.display_image || img.image || img.image_url, 'gallery'),
-    alt: img.caption || `Gallery image ${index + 1}`, // Add default alt text
+    alt: img.caption || `Gallery image ${index + 1}`,
   }));
 
   // Combine all images
@@ -41,7 +42,6 @@ export function ProjectView({ project }: ProjectViewProps) {
     return [featuredImage, ...validGalleryImages];
   }, [project.featured_image, project.title, validGalleryImages, optimizedFeaturedImage.src]);
 
-  // Memoize selected image data
   const selectedImage = useMemo(() =>
     selectedImageIndex !== null ? allImages[selectedImageIndex] : null,
     [selectedImageIndex, allImages]
@@ -50,6 +50,17 @@ export function ProjectView({ project }: ProjectViewProps) {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="space-y-8">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Link
+            href="/portfolio"
+            className="inline-flex items-center text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" />
+            Back to Portfolio
+          </Link>
+        </div>
+
         {/* Title and Description */}
         <div className="space-y-4">
           <h1 className="text-4xl font-bold tracking-tight">{project.title}</h1>
@@ -91,7 +102,7 @@ export function ProjectView({ project }: ProjectViewProps) {
 
         {/* Project Links */}
         <div className="flex gap-4">
-          {project.github_url && (
+          {project.github_url && project.github_url === 'github' && (
             <a
               href={project.github_url}
               target="_blank"
@@ -99,18 +110,29 @@ export function ProjectView({ project }: ProjectViewProps) {
               className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 transition-colors duration-200"
             >
               <Github className="mr-2 h-4 w-4" />
-              View Source
+              GitHub Repo
             </a>
           )}
-          {project.project_url && (
+          {project.external_url && project.external_url === 'marketplace' && (
             <a
-              href={project.project_url}
+              href={project.external_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 transition-colors duration-200"
             >
               <ExternalLink className="mr-2 h-4 w-4" />
-              Visit Project
+              More Info
+            </a>
+          )}
+          {project.live_site_url && (
+            <a
+              href={project.live_site_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-4 py-2 rounded-md bg-[#0C8C9D] text-white hover:bg-[#0C8C9D]/90 transition-colors duration-200"
+            >
+              <ExternalLink className="mr-2 h-4 w-4" />
+              Visit Live Site
             </a>
           )}
         </div>

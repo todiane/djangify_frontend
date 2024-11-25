@@ -13,8 +13,8 @@ type PortfolioCardProps = Pick<Project,
   'featured_image' |
   'technologies' |
   'github_url' |
-  'project_url' |
-  'live_url'
+  'external_url' |
+  'live_site_url'
 >;
 
 export function PortfolioCard({
@@ -24,8 +24,8 @@ export function PortfolioCard({
   featured_image,
   technologies,
   github_url,
-  project_url,
-  live_url
+  external_url,
+  live_site_url
 }: PortfolioCardProps) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden h-full">
@@ -70,9 +70,9 @@ export function PortfolioCard({
               <Github className="h-4 w-4" />
             </a>
           )}
-          {project_url && (
+          {external_url && (
             <a
-              href={project_url}
+              href={external_url}
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors flex items-center gap-2"
@@ -81,9 +81,9 @@ export function PortfolioCard({
               <ExternalLink className="h-4 w-4" />
             </a>
           )}
-          {live_url && (
+          {live_site_url && (
             <a
-              href={live_url}
+              href={live_site_url}
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors flex items-center gap-2"

@@ -19,8 +19,8 @@ export function PortfolioList({ portfolios }: PortfolioListProps) {
           featured_image={getImageUrl(portfolio.display_image || portfolio.featured_image, 'portfolio')}
           technologies={portfolio.technologies}
           github_url={portfolio.github_url}
-          project_url={portfolio.project_url}
-          live_url={portfolio.live_url}
+          external_url={portfolio.external_url}
+          live_site_url={portfolio.live_site_url}
         />
       ))}
     </div>
