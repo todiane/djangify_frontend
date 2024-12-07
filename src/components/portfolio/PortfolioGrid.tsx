@@ -122,6 +122,17 @@ export function PortfolioGrid({ initialItems, technologies }: PortfolioGridProps
                     Demo
                   </a>
                 )}
+                {item.live_site_url && (
+                  <a
+                    href={item.live_site_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 rounded-md bg-[#0C8C9D] text-white hover:bg-[#0C8C9D]/90 transition-colors duration-200"
+                  >
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    Visit
+                  </a>
+                )}
               </div>
             </div>
           </div>

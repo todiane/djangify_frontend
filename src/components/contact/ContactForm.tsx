@@ -8,6 +8,7 @@ interface FormData {
   name: string;
   email: string;
   message: string;
+  contact_reason: string;
 }
 
 export function ContactForm() {
@@ -16,7 +17,8 @@ export function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
-    message: ''
+    message: '',
+    contact_reason: 'other'
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,11 +27,27 @@ export function ContactForm() {
 
     setIsSubmitting(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/contact/messages/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          contact_reason: formData.contact_reason || 'other'
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
       setSubmitted(true);
     } catch (error) {
       console.error('Error:', error);
+      // Handle error state here
     } finally {
       setIsSubmitting(false);
     }
@@ -74,7 +92,23 @@ export function ContactForm() {
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0C8C9D] focus:border-[#0C8C9D]"
           />
         </div>
-
+        <div className="space-y-2">
+          <label htmlFor="contact_reason" className="block text-sm font-medium text-gray-700">
+            Reason for Contact
+          </label>
+          <select
+            id="contact_reason"
+            value={formData.contact_reason}
+            onChange={(e) => setFormData(prev => ({ ...prev, contact_reason: e.target.value }))}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0C8C9D] focus:border-[#0C8C9D]"
+          >
+            <option value="other">Other</option>
+            <option value="buy_project">Buy a project that is for sale</option>
+            <option value="ecommerce">Bespoke eCommerce store</option>
+            <option value="lms">Bespoke Learning Management System</option>
+            <option value="speaking">Speaking/Training Opportunity</option>
+          </select>
+        </div>
         <div className="space-y-2">
           <label htmlFor="message" className="block text-sm font-medium text-gray-700">
             Message
