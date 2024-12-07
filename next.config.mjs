@@ -7,7 +7,7 @@ const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ["lucide-react"],
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   poweredByHeader: false,
   compress: true,
@@ -38,12 +38,22 @@ const nextConfig = {
         hostname: 'djangify.up.railway.app',
         pathname: '/media/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'djangify.com',
+        pathname: '/media/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.djangify.com',
+        pathname: '/media/**',
+      },
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     domains: ['res.cloudinary.com'],
     formats: ['image/webp'],
-    unoptimized: process.env.NODE_ENV === 'production',
+    unoptimized: false,
   },
 
   // Experimental features
@@ -51,7 +61,7 @@ const nextConfig = {
     typedRoutes: true,
     serverComponentsExternalPackages: [],
     scrollRestoration: true,
-    metadataBase: 'https://djangify.up.railway.app',
+    metadataBase: 'https://www.djangify.com',
   },
 
   // Font configuration (serve fonts from the public folder)
