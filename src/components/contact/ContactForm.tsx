@@ -1,4 +1,4 @@
-// src/components/contact/ContactForm.tsx
+// Path: src/components/contact/ContactForm.tsx
 'use client';
 
 import { useState } from 'react';
@@ -27,10 +27,11 @@ export function ContactForm() {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/contact/messages/`, {
+      const response = await fetch('https://djangifybackend.up.railway.app/api/v1/contact/messages/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({
           name: formData.name,
@@ -40,14 +41,17 @@ export function ContactForm() {
         }),
       });
 
+      console.log('Response status:', response.status); // Add this for debugging
+
       if (!response.ok) {
-        throw new Error('Failed to send message');
+        const errorData = await response.json().catch(() => null);
+        console.error('Error data:', errorData); // Add this for debugging
+        throw new Error(errorData?.message || 'Failed to send message');
       }
 
       setSubmitted(true);
     } catch (error) {
       console.error('Error:', error);
-      // Handle error state here
     } finally {
       setIsSubmitting(false);
     }
@@ -92,6 +96,7 @@ export function ContactForm() {
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0C8C9D] focus:border-[#0C8C9D]"
           />
         </div>
+
         <div className="space-y-2">
           <label htmlFor="contact_reason" className="block text-sm font-medium text-gray-700">
             Reason for Contact
@@ -109,6 +114,7 @@ export function ContactForm() {
             <option value="speaking">Speaking/Training Opportunity</option>
           </select>
         </div>
+
         <div className="space-y-2">
           <label htmlFor="message" className="block text-sm font-medium text-gray-700">
             Message
