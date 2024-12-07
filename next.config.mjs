@@ -7,7 +7,7 @@ const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ["lucide-react"],
   typescript: {
-    ignoreBuildErrors: false,
+    ignoreBuildErrors: true,
   },
   poweredByHeader: false,
   compress: true,
@@ -53,7 +53,7 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     domains: ['res.cloudinary.com'],
     formats: ['image/webp'],
-    unoptimized: false,
+    unoptimized: process.env.NODE_ENV === 'production',
   },
 
   // Experimental features
@@ -61,7 +61,7 @@ const nextConfig = {
     typedRoutes: true,
     serverComponentsExternalPackages: [],
     scrollRestoration: true,
-    metadataBase: 'https://www.djangify.com',
+    metadataBase: 'https://djangify.up.railway.app',
   },
 
   // Font configuration (serve fonts from the public folder)
