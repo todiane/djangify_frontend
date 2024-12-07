@@ -119,7 +119,7 @@ export function PortfolioGrid({ initialItems, technologies }: PortfolioGridProps
                     className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
-                    Demo
+                    For Sale
                   </a>
                 )}
                 {item.live_site_url && (
